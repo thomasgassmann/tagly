@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "Tagly.Api";
+
+package auth;
+
+service Auth {
+  rpc Login (AuthRequest) returns (AuthReply);
+}
+
+message AuthRequest {
+  string secret = 1;
+}
+
+message AuthReply {
+  string jwt_token = 1;
+}
