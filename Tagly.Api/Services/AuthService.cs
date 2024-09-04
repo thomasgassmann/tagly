@@ -38,7 +38,7 @@ public class AuthService : Auth.AuthBase
                 new Claim(JwtRegisteredClaimNames.Email, _configuration["User"]!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             ]),
-            Expires = DateTime.UtcNow.AddMinutes(60),
+            Expires = DateTime.UtcNow.AddSeconds(60),
             Issuer = issuer,
             Audience = audience,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)

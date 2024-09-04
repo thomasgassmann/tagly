@@ -1,0 +1,42 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Tagly.App.InitWindow"
+        Width="500"
+        CanResize="False"
+        Height="350"
+        Title="Tagly">
+    <StackPanel Spacing="5" Margin="5">
+        <TextBlock Text="Url:" FontWeight="Bold"/>
+        <TextBox x:Name="Url"></TextBox>
+        <TextBlock Text="Token:" FontWeight="Bold"/>
+        <TextBox x:Name="Token"></TextBox>
+        <TextBlock Text="Source:" FontWeight="Bold"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBox Grid.Column="0" Grid.Row="0" IsReadOnly="True" x:Name="Source" HorizontalAlignment="Stretch"></TextBox>
+            <Button Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" Click="SelectDirectorySource">Select</Button>
+        </Grid>
+        <TextBlock Text="Backup:" FontWeight="Bold"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBox Grid.Column="0" Grid.Row="0" IsReadOnly="True" x:Name="Backup" HorizontalAlignment="Stretch"></TextBox>
+            <Button Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" Click="SelectDirectoryBackup">Select</Button>
+        </Grid>
+        <Button Click="Login">Login</Button>
+    </StackPanel>
+</Window>

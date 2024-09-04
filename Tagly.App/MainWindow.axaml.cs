@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Grpc.Net.Client;
 using Mapsui;
 using Mapsui.Layers;
 using Mapsui.Nts;
@@ -16,15 +17,24 @@ using MsBox.Avalonia.Enums;
 using NetTopologySuite.Geometries;
 using Tagly.App.Models;
 using Tagly.App.ViewModels;
+using Tagly.Grpc;
 
 namespace Tagly.App;
 
 public partial class MainWindow : Window
 {
     private readonly MainWindowViewModel _viewModel;
+    private readonly GrpcPhotosClient _client;
+
+    private readonly string _sourcePath;
+    private readonly string _backupPath;
     
-    public MainWindow()
+    public MainWindow(GrpcPhotosClient client, string sourcePath, string backupPath)
     {
+        _sourcePath = sourcePath;
+        _backupPath = backupPath;
+        
+        _client = client;
         _viewModel = new MainWindowViewModel();
         InitializeComponent();
         
@@ -58,10 +68,6 @@ public partial class MainWindow : Window
             layer?.DataHasChanged();
         };
         DataContext = _viewModel;
-        
-        // Load some example data
-        _viewModel.Photos.Add(new PhotoItem { FilePath = "file1.txt", Latitude = 34.0522, Longitude = -118.2437, Date = DateTime.Now, Description = "Example file 1" });
-        _viewModel.Photos.Add(new PhotoItem { FilePath = "file2.txt", Latitude = 40.7128, Longitude = -74.0060, Date = DateTime.Now, Description = "Example file 2" });
     }
 
     private void LoadClick(object? sender, RoutedEventArgs e)
@@ -80,7 +86,7 @@ public partial class MainWindow : Window
         var result = await box.ShowAsync();
         if (result == ButtonResult.Yes)
         {
-            
+
         }
     }
 }

@@ -5,6 +5,8 @@
         xmlns:app="clr-namespace:Tagly.App"
         xmlns:vm="using:Tagly.App.ViewModels"
         xmlns:m="using:Tagly.App.Models"
+        Width="1250"
+        Height="750"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Tagly.App.MainWindow"
         Title="Tagly">

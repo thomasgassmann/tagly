@@ -18,8 +18,15 @@
     <PackageReference Include="Grpc.Net.Client" Version="2.65.0" />
     <PackageReference Include="Mapsui.Avalonia" Version="4.1.7" />
     <PackageReference Include="MessageBox.Avalonia" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\Tagly.Db\Tagly.Db.csproj" />
     <ProjectReference Include="..\Tagly.Grpc\Tagly.Grpc.csproj" />
