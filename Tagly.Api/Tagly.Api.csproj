@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\photos.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\auth.proto" GrpcServices="Server" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
-    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.65.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -26,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tagly.Db\Tagly.Db.csproj" />
+    <ProjectReference Include="..\Tagly.Grpc\Tagly.Grpc.csproj" />
   </ItemGroup>
 
 </Project>

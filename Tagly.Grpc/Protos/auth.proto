@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "Tagly.Api";
+option csharp_namespace = "Tagly.Grpc";
 
 package auth;
 

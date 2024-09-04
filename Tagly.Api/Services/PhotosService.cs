@@ -2,6 +2,7 @@
 using Grpc.Core;
 using SixLabors.ImageSharp;
 using Tagly.Db;
+using Tagly.Grpc;
 
 namespace Tagly.Api.Services;
 

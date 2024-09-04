@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tagly.Api", "Tagly.Api\Tagl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tagly.Db", "Tagly.Db\Tagly.Db.csproj", "{886BADFA-6A00-4345-B735-C5FD190C839F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tagly.Grpc", "Tagly.Grpc\Tagly.Grpc.csproj", "{36137DB7-81FA-45EB-94F1-746E1263CB9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tagly.App", "Tagly.App\Tagly.App.csproj", "{F106CAC5-9952-4F6E-857D-63D417D7B611}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{886BADFA-6A00-4345-B735-C5FD190C839F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{886BADFA-6A00-4345-B735-C5FD190C839F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{886BADFA-6A00-4345-B735-C5FD190C839F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36137DB7-81FA-45EB-94F1-746E1263CB9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36137DB7-81FA-45EB-94F1-746E1263CB9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36137DB7-81FA-45EB-94F1-746E1263CB9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36137DB7-81FA-45EB-94F1-746E1263CB9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F106CAC5-9952-4F6E-857D-63D417D7B611}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F106CAC5-9952-4F6E-857D-63D417D7B611}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F106CAC5-9952-4F6E-857D-63D417D7B611}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F106CAC5-9952-4F6E-857D-63D417D7B611}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

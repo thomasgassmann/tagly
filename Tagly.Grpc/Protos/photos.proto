@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
 
-option csharp_namespace = "Tagly.Api";
+option csharp_namespace = "Tagly.Grpc";
 
 package photos;
 
@@ -12,11 +12,11 @@ message ServerPhoto {
 }
 
 message ServerPhotoMeta {
-  string file_name = 2;
-  google.protobuf.Timestamp date = 4;
-  double latitude = 5;
-  double longitude = 6;
-  string description = 7;
+  string file_name = 1;
+  google.protobuf.Timestamp date = 2;
+  double latitude = 3;
+  double longitude = 4;
+  string description = 5;
 }
 
 message PhotoCreationStatus {

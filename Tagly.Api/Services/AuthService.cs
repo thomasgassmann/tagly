@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Grpc.Core;
 using Microsoft.IdentityModel.Tokens;
+using Tagly.Grpc;
 
 namespace Tagly.Api.Services;
 
