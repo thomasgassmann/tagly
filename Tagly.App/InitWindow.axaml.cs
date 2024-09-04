@@ -15,6 +15,9 @@ namespace Tagly.App;
 
 public partial class InitWindow : Window
 {
+    private readonly double _defaultLatitude = 0;
+    private readonly double _defaultLongitude = 0;
+    
     public InitWindow()
     {
         IConfiguration config = new ConfigurationBuilder()
@@ -25,6 +28,8 @@ public partial class InitWindow : Window
         Source.Text = config["DefaultSourcePath"];
         Backup.Text = config["DefaultBackupPath"];
         Url.Text = config["DefaultUrl"];
+        _defaultLatitude = double.Parse(config["DefaultLatitude"]!);
+        _defaultLongitude = double.Parse(config["DefaultLongitude"]!);
     }
 
     private async void Login(object? sender, RoutedEventArgs e)
@@ -48,7 +53,7 @@ public partial class InitWindow : Window
         }
 
         Hide();
-        new MainWindow(client, source, backup).Show();
+        new MainWindow(client, source, backup, _defaultLatitude, _defaultLongitude).Show();
     }
 
     private async Task SelectDirectory(TextBox textBox, string title)

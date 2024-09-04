@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using Avalonia.Media.Imaging;
 using ReactiveUI;
 
 namespace Tagly.App.Models;

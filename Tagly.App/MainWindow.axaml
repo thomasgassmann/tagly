@@ -25,25 +25,37 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <ListBox SelectedValue="{Binding SelectedPhoto}" SelectionMode="Single" Grid.Column="0" ItemsSource="{Binding Photos}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Spacing="2">
-                        <TextBlock Width="200" Text="{Binding FileName}"/>
-                        <StackPanel Width="150" Orientation="Horizontal">
-                            <TextBlock Text="{Binding LatitudeString}"/>
-                            <TextBlock>°N</TextBlock>
+        <Grid Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*" />
+                <RowDefinition Height="0.5*" />
+            </Grid.RowDefinitions>
+            
+            <Image Grid.Row="0" Grid.Column="0" x:Name="CurrentImage"></Image>
+            
+            <ListBox SelectionChanged="SelectingItemsControl_OnSelectionChanged" SelectedValue="{Binding SelectedPhoto}" SelectionMode="Single" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Photos}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="2">
+                            <TextBlock Width="200" Text="{Binding FileName}"/>
+                            <StackPanel Width="150" Orientation="Horizontal">
+                                <TextBlock Text="{Binding LatitudeString}"/>
+                                <TextBlock>°N</TextBlock>
+                            </StackPanel>
+                            <StackPanel Width="150" Orientation="Horizontal">
+                                <TextBlock Text="{Binding LongitudeString}"/>
+                                <TextBlock>°E</TextBlock>
+                            </StackPanel>
+                            <TextBlock Width="100" Text="{Binding DateString}" />
+                            <TextBlock Text="{Binding Description}"/>
                         </StackPanel>
-                        <StackPanel Width="150" Orientation="Horizontal">
-                            <TextBlock Text="{Binding LongitudeString}"/>
-                            <TextBlock>°E</TextBlock>
-                        </StackPanel>
-                        <TextBlock Width="100" Text="{Binding DateString}" />
-                        <TextBlock Text="{Binding Description}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
 
         <!-- Right Side: File Editor -->
         <Grid Grid.Column="1" Margin="10">
@@ -79,6 +91,7 @@
             <StackPanel Grid.Row="2" Orientation="Horizontal">
                 <Button Margin="2" Click="SendAllClick">Send all</Button>
                 <Button Margin="2" Click="LoadFiles">Load from directory</Button>
+                <Button Margin="2" Click="GoHomeClick">Go Home</Button>
             </StackPanel>
         </Grid>
 
