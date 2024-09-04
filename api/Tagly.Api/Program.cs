@@ -34,7 +34,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGrpcService<AuthService>().AllowAnonymous();
-app.MapGrpcService<GreeterService>().RequireAuthorization();
+app.MapGrpcService<PhotosService>().RequireAuthorization();
 
 if (app.Environment.IsDevelopment())
 {

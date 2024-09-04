@@ -8,10 +8,10 @@ namespace Tagly.Api.Services;
 
 public class AuthService : Auth.AuthBase
 {
-    private readonly ILogger<GreeterService> _logger;
+    private readonly ILogger<AuthService> _logger;
     private readonly IConfiguration _configuration;
 
-    public AuthService(ILogger<GreeterService> logger, IConfiguration configuration)
+    public AuthService(ILogger<AuthService> logger, IConfiguration configuration)
     {
         _logger = logger;
         _configuration = configuration;

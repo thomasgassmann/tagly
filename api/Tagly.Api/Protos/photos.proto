@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "Tagly.Api";
+
+package photos;
+
+message ServerPhoto {
+  ServerPhotoMeta meta = 1;
+  bytes data = 2;
+}
+
+message ServerPhotoMeta {
+  string id = 1;
+  string file_name = 2;
+  google.protobuf.Timestamp date = 4;
+  double latitude = 5;
+  double longitude = 6;
+  string description = 7;
+}
+
+message ServerPhotoList {
+  repeated ServerPhotoMeta items = 1;
+}
+
+message PhotoCreationStatus {
+  bool success = 1;
+  string created_id = 2;
+}
+
+message GetPhotoByIdRequest {
+  string id = 1;
+}
+
+message UpdatePhotoByIdRequest {
+  string id = 1;
+  ServerPhotoMeta new_meta = 2;
+}
+
+message UpdatePhotoStatus {
+  bool success = 1;
+  ServerPhotoMeta meta = 2;
+}
+
+service Photos {
+  rpc AddPhoto (ServerPhoto) returns (PhotoCreationStatus);
+  rpc ListPhotos (google.protobuf.Empty) returns (ServerPhotoList);
+  rpc GetPhotoById (GetPhotoByIdRequest) returns (ServerPhoto); 
+  rpc UpdatePhotoById (UpdatePhotoByIdRequest) returns (UpdatePhotoStatus); 
+}
