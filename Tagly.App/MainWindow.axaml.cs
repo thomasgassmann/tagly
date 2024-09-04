@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
@@ -43,7 +46,6 @@ public partial class MainWindow : Window
         mapControl.VerticalAlignment = VerticalAlignment.Stretch;
         MapControl.Content = mapControl;
         
-        
         var map = mapControl.Map!;
         var layer = new GenericCollectionLayer<List<IFeature>>
         {
@@ -64,20 +66,28 @@ public partial class MainWindow : Window
             });
 
             var mPoint = SphericalMercator.ToLonLat(e.MapInfo.WorldPosition.X, e.MapInfo.WorldPosition.Y);
-            Console.WriteLine(mPoint);
+            
+            _viewModel.CurrentLatitude = mPoint.lat;
+            _viewModel.CurrentLongitude = mPoint.lon;
             layer?.DataHasChanged();
         };
         DataContext = _viewModel;
     }
 
-    private void LoadClick(object? sender, RoutedEventArgs e)
+    private void UpdateFilesFromSource()
     {
-        
-    }
-
-    private void ApplyToSelectedClick(object? sender, RoutedEventArgs e)
-    {
-        
+        var currentPhotos = _viewModel.Photos.ToDictionary(x => x.FilePath, x => x);
+        var files = Directory.GetFiles(_sourcePath);
+        foreach (var file in files)
+        {
+            if (!currentPhotos.ContainsKey(file))
+            {
+                _viewModel.Photos.Add(new PhotoItem
+                {
+                    FilePath = file
+                });
+            }
+        }
     }
 
     private async void SendAllClick(object? sender, RoutedEventArgs e)
@@ -89,4 +99,10 @@ public partial class MainWindow : Window
 
         }
     }
+
+    private async void LoadFiles(object? sender, RoutedEventArgs e) =>
+        UpdateFilesFromSource();
+
+    private async void Control_OnLoaded(object? sender, RoutedEventArgs e) =>
+        UpdateFilesFromSource();
 }

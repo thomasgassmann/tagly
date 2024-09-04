@@ -9,6 +9,7 @@
         Height="750"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Tagly.App.MainWindow"
+        Loaded="Control_OnLoaded"
         Title="Tagly">
     
     <Design.DataContext>
@@ -17,26 +18,27 @@
     
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <ListBox SelectedItems="{Binding SelectedPhotos}" SelectionMode="Multiple" Grid.Column="0" ItemsSource="{Binding Photos}">
+        <ListBox SelectedValue="{Binding SelectedPhoto}" SelectionMode="Single" Grid.Column="0" ItemsSource="{Binding Photos}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Spacing="2">
                         <TextBlock Width="200" Text="{Binding FileName}"/>
                         <StackPanel Width="150" Orientation="Horizontal">
-                            <TextBlock Text="{Binding Latitude}"/>
+                            <TextBlock Text="{Binding LatitudeString}"/>
                             <TextBlock>°N</TextBlock>
                         </StackPanel>
                         <StackPanel Width="150" Orientation="Horizontal">
-                            <TextBlock Text="{Binding Longitude}"/>
+                            <TextBlock Text="{Binding LongitudeString}"/>
                             <TextBlock>°E</TextBlock>
                         </StackPanel>
+                        <TextBlock Width="100" Text="{Binding DateString}" />
                         <TextBlock Text="{Binding Description}"/>
                     </StackPanel>
                 </DataTemplate>
@@ -75,9 +77,8 @@
             </Border>
             
             <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <Button Margin="2" Click="LoadClick">Load</Button>
-                <Button Margin="2" Click="ApplyToSelectedClick">Apply to selected</Button>
                 <Button Margin="2" Click="SendAllClick">Send all</Button>
+                <Button Margin="2" Click="LoadFiles">Load from directory</Button>
             </StackPanel>
         </Grid>
 
