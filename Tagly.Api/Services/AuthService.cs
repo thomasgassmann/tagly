@@ -19,9 +19,9 @@ public class AuthService : Auth.AuthBase
 
     public override Task<AuthReply> Login(AuthRequest request, ServerCallContext context)
     {
-        if (request.Secret != _configuration["Secret"])
+        if (request.ImportToken != _configuration["ImportToken"])
         {
-            _logger.LogInformation("Could not authenticate for user {0}", request.Secret);
+            _logger.LogInformation("Could not authenticate with token {0}", request.ImportToken);
             throw new RpcException(new Status(StatusCode.Unauthenticated, "Not authenticated"));
         }
 

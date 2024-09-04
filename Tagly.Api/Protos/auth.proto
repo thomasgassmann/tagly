@@ -9,7 +9,7 @@ service Auth {
 }
 
 message AuthRequest {
-  string secret = 1;
+  string import_token = 1;
 }
 
 message AuthReply {
