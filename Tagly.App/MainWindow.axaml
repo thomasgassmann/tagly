@@ -2,8 +2,64 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:app="clr-namespace:Tagly.App"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Tagly.App.MainWindow"
-        Title="Tagly.App">
-    
+        Title="Tagly">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Left Side: File List -->
+        <DataGrid Name="FileList" AutoGenerateColumns="False" Grid.Column="0" 
+                  IsReadOnly="True" SelectionChanged="OnSelectionChanged" x:DataType="app:FileItem">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Filename" Binding="{Binding Filename}" Width="*"/>
+                <DataGridTextColumn Header="Latitude" Binding="{Binding Latitude}" Width="*"/>
+                <DataGridTextColumn Header="Longitude" Binding="{Binding Longitude}" Width="*"/>
+                <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="2*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Right Side: File Editor -->
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Filename:" FontWeight="Bold"/>
+                <TextBox Name="FilenameTextBox" Margin="0,5"/>
+
+                <TextBlock Text="Latitude:" FontWeight="Bold"/>
+                <TextBox Name="LatitudeTextBox" Margin="0,5"/>
+
+                <TextBlock Text="Longitude:" FontWeight="Bold"/>
+                <TextBox Name="LongitudeTextBox" Margin="0,5"/>
+
+                <TextBlock Text="Date:" FontWeight="Bold"/>
+                <DatePicker Name="DateTextBox" Margin="0,5" />
+
+                <TextBlock Text="Description:" FontWeight="Bold"/>
+                <TextBox AcceptsReturn="True" Name="DescriptionTextBox" Height="150" Margin="0,5" />
+            </StackPanel>            
+            
+            <!-- Map Section -->
+            <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="0,10">
+                <ContentControl Name="MapControl" />
+            </Border>
+        </Grid>
+
+    </Grid>
+
+
 </Window>
