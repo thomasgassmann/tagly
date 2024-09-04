@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Mapsui;
 using Mapsui.Layers;
@@ -10,14 +11,21 @@ using Mapsui.Projections;
 using Mapsui.Styles;
 using Mapsui.Tiling;
 using Mapsui.UI.Avalonia;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using NetTopologySuite.Geometries;
+using Tagly.App.Models;
+using Tagly.App.ViewModels;
 
 namespace Tagly.App;
 
 public partial class MainWindow : Window
 {
+    private readonly MainWindowViewModel _viewModel;
+    
     public MainWindow()
     {
+        _viewModel = new MainWindowViewModel();
         InitializeComponent();
         
         var mapControl = new MapControl();
@@ -49,33 +57,30 @@ public partial class MainWindow : Window
             Console.WriteLine(mPoint);
             layer?.DataHasChanged();
         };
-        DataContext = this;
-
+        DataContext = _viewModel;
+        
         // Load some example data
-        Files.Add(new FileItem { Filename = "file1.txt", Latitude = 34.0522, Longitude = -118.2437, Date = "2024-09-01", Description = "Example file 1" });
-        Files.Add(new FileItem { Filename = "file2.txt", Latitude = 40.7128, Longitude = -74.0060, Date = "2024-09-02", Description = "Example file 2" });
+        _viewModel.Photos.Add(new PhotoItem { FilePath = "file1.txt", Latitude = 34.0522, Longitude = -118.2437, Date = DateTime.Now, Description = "Example file 1" });
+        _viewModel.Photos.Add(new PhotoItem { FilePath = "file2.txt", Latitude = 40.7128, Longitude = -74.0060, Date = DateTime.Now, Description = "Example file 2" });
     }
-    
-    public ObservableCollection<FileItem> Files { get; set; } = new ObservableCollection<FileItem>();
-    
-    private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+
+    private void LoadClick(object? sender, RoutedEventArgs e)
     {
-        if (FileList.SelectedItem is FileItem selectedFile)
+        
+    }
+
+    private void ApplyToSelectedClick(object? sender, RoutedEventArgs e)
+    {
+        
+    }
+
+    private async void SendAllClick(object? sender, RoutedEventArgs e)
+    {
+        var box = MessageBoxManager.GetMessageBoxStandard("Confirm", "Alle senden?", ButtonEnum.YesNo);
+        var result = await box.ShowAsync();
+        if (result == ButtonResult.Yes)
         {
-            FilenameTextBox.Text = selectedFile.Filename;
-            LatitudeTextBox.Text = selectedFile.Latitude.ToString();
-            LongitudeTextBox.Text = selectedFile.Longitude.ToString();
-            DescriptionTextBox.Text = selectedFile.Description;
+            
         }
     }
-    
-}
-
-public class FileItem
-{
-    public string Filename { get; set; }
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
-    public string Date { get; set; }
-    public string Description { get; set; }
 }

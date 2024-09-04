@@ -3,9 +3,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:app="clr-namespace:Tagly.App"
+        xmlns:vm="using:Tagly.App.ViewModels"
+        xmlns:m="using:Tagly.App.Models"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Tagly.App.MainWindow"
         Title="Tagly">
+    
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
@@ -15,17 +22,24 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Left Side: File List -->
-        <DataGrid Name="FileList" AutoGenerateColumns="False" Grid.Column="0" 
-                  IsReadOnly="True" SelectionChanged="OnSelectionChanged" x:DataType="app:FileItem">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Filename" Binding="{Binding Filename}" Width="*"/>
-                <DataGridTextColumn Header="Latitude" Binding="{Binding Latitude}" Width="*"/>
-                <DataGridTextColumn Header="Longitude" Binding="{Binding Longitude}" Width="*"/>
-                <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="2*"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <ListBox SelectedItems="{Binding SelectedPhotos}" SelectionMode="Multiple" Grid.Column="0" ItemsSource="{Binding Photos}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="2">
+                        <TextBlock Width="200" Text="{Binding FileName}"/>
+                        <StackPanel Width="150" Orientation="Horizontal">
+                            <TextBlock Text="{Binding Latitude}"/>
+                            <TextBlock>°N</TextBlock>
+                        </StackPanel>
+                        <StackPanel Width="150" Orientation="Horizontal">
+                            <TextBlock Text="{Binding Longitude}"/>
+                            <TextBlock>°E</TextBlock>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Description}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <!-- Right Side: File Editor -->
         <Grid Grid.Column="1" Margin="10">
@@ -35,28 +49,34 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
                 <TextBlock Text="Filename:" FontWeight="Bold"/>
-                <TextBox Name="FilenameTextBox" Margin="0,5"/>
+                <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding CurrentFileName}" />
 
                 <TextBlock Text="Latitude:" FontWeight="Bold"/>
-                <TextBox Name="LatitudeTextBox" Margin="0,5"/>
+                <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding CurrentLatitude}" />
 
                 <TextBlock Text="Longitude:" FontWeight="Bold"/>
-                <TextBox Name="LongitudeTextBox" Margin="0,5"/>
+                <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding CurrentLongitude}" />
 
                 <TextBlock Text="Date:" FontWeight="Bold"/>
-                <DatePicker Name="DateTextBox" Margin="0,5" />
+                <DatePicker Margin="0,5" SelectedDate="{Binding CurrentDate}" />
 
                 <TextBlock Text="Description:" FontWeight="Bold"/>
-                <TextBox AcceptsReturn="True" Name="DescriptionTextBox" Height="150" Margin="0,5" />
+                <TextBox AcceptsReturn="True" Height="150" Margin="0,5" Text="{Binding CurrentDescription}" />
             </StackPanel>            
             
-            <!-- Map Section -->
             <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="0,10">
                 <ContentControl Name="MapControl" />
             </Border>
+            
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <Button Margin="2" Click="LoadClick">Load</Button>
+                <Button Margin="2" Click="ApplyToSelectedClick">Apply to selected</Button>
+                <Button Margin="2" Click="SendAllClick">Send all</Button>
+            </StackPanel>
         </Grid>
 
     </Grid>
