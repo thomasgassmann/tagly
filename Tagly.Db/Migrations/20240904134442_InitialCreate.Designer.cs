@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Tagly.Db;
 
 #nullable disable
 
-namespace Tagly.Api.Migrations
+namespace Tagly.Db.Migrations
 {
-    [DbContext(typeof(BloggingContext))]
-    [Migration("20240904114243_InitialCreate")]
+    [DbContext(typeof(TaglyContext))]
+    [Migration("20240904134442_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -19,12 +20,14 @@ namespace Tagly.Api.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
 
-            modelBuilder.Entity("StoredPhoto", b =>
+            modelBuilder.Entity("Tagly.Db.StoredPhoto", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("Data")
+                        .IsRequired()
                         .HasColumnType("BLOB");
 
                     b.Property<DateTime?>("Date")
@@ -34,6 +37,7 @@ namespace Tagly.Api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FileName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<double?>("Latitude")

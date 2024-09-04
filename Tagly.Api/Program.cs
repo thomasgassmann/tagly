@@ -2,9 +2,13 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Tagly.Api.Services;
+using Microsoft.EntityFrameworkCore;
+using Tagly.Db;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<TaglyContext>(opt =>
+    opt.UseSqlite(builder.Configuration["ConnectionString"]));
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 builder.Services.AddAuthentication(options =>

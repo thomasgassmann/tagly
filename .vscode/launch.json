@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/api/Tagly.Api/bin/Debug/net8.0/Tagly.Api.dll",
+            "program": "${workspaceFolder}/Tagly.Api/bin/Debug/net8.0/Tagly.Api.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/api/Tagly.Api",
+            "cwd": "${workspaceFolder}/Tagly.Api",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {

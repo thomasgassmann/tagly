@@ -2,27 +2,26 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Tagly.Db;
 
 #nullable disable
 
-namespace Tagly.Api.Migrations
+namespace Tagly.Db.Migrations
 {
-    [DbContext(typeof(BloggingContext))]
-    [Migration("20240904114337_MakeRequired")]
-    partial class MakeRequired
+    [DbContext(typeof(TaglyContext))]
+    partial class TaglyContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
 
-            modelBuilder.Entity("StoredPhoto", b =>
+            modelBuilder.Entity("Tagly.Db.StoredPhoto", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("Data")
                         .IsRequired()

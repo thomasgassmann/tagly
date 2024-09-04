@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tagly.Api", "Tagly.Api\Tagly.Api.csproj", "{06A83BA6-A7AD-47E3-AFC1-3C47F98C6D79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tagly.Db", "Tagly.Db\Tagly.Db.csproj", "{886BADFA-6A00-4345-B735-C5FD190C839F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{06A83BA6-A7AD-47E3-AFC1-3C47F98C6D79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06A83BA6-A7AD-47E3-AFC1-3C47F98C6D79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06A83BA6-A7AD-47E3-AFC1-3C47F98C6D79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{886BADFA-6A00-4345-B735-C5FD190C839F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{886BADFA-6A00-4345-B735-C5FD190C839F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{886BADFA-6A00-4345-B735-C5FD190C839F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{886BADFA-6A00-4345-B735-C5FD190C839F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

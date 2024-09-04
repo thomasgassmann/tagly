@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Tagly.Api.Migrations
+namespace Tagly.Db.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -15,9 +15,10 @@ namespace Tagly.Api.Migrations
                 name: "Photos",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    FileName = table.Column<string>(type: "TEXT", nullable: true),
-                    Data = table.Column<byte[]>(type: "BLOB", nullable: true),
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    FileName = table.Column<string>(type: "TEXT", nullable: false),
+                    Data = table.Column<byte[]>(type: "BLOB", nullable: false),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Latitude = table.Column<double>(type: "REAL", nullable: true),
                     Longitude = table.Column<double>(type: "REAL", nullable: true),
