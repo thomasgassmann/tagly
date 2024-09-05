@@ -48,4 +48,13 @@
     <data name="LoginFailure" xml:space="preserve">
         <value>Login fehlgeschlagen</value>
     </data>
+    <data name="ConfirmSend" xml:space="preserve">
+        <value>Ausgewählte fertigstellen?</value>
+    </data>
+    <data name="ConfirmSendText" xml:space="preserve">
+        <value>{0} Fotos senden?</value>
+    </data>
+    <data name="ApplyToSelected" xml:space="preserve">
+        <value>Auf selektierte anwenden</value>
+    </data>
 </root>

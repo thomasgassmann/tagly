@@ -99,21 +99,36 @@ public partial class MainWindow : Window
     private void BackupPhoto(string path)
     {
         var fileName = Path.GetFileName(path);
-        File.Copy(path, Path.Combine(_backupPath, Guid.NewGuid().ToString() + fileName));
+        var target = Path.Combine(_backupPath, fileName);
+        while (Path.Exists(target))
+        {
+            target = Path.Combine(_backupPath, Guid.NewGuid() + fileName);
+        }
+        
+        File.Copy(path, target);
     }
 
     private async void SendClick(object? sender, RoutedEventArgs e)
     {
-        if (_viewModel.SelectedPhoto == null)
+        if (_viewModel.SelectedPhotos.Count == 0)
         {
             await this.ShowMessageAsync("None selected", "Please select a photo first");
             return;
         }
 
-        var selected = _viewModel.SelectedPhoto;
-        var box = MessageBoxManager.GetMessageBoxStandard("Confirm", "Alle senden?", ButtonEnum.YesNo);
+        var selectedItems = _viewModel.SelectedPhotos.ToList();
+        var box = MessageBoxManager.GetMessageBoxStandard(
+            Tagly.App.Resources.ConfirmSend, 
+            string.Format(Tagly.App.Resources.ConfirmSendText, selectedItems.Count), 
+            ButtonEnum.YesNo);
         var result = await box.ShowWindowDialogAsync(this);
-        if (result == ButtonResult.Yes)
+        if (result != ButtonResult.Yes)
+        {
+            return;
+        }
+
+        IsEnabled = false;
+        foreach (var selected in selectedItems)
         {
             try
             {
@@ -136,22 +151,24 @@ public partial class MainWindow : Window
 
                 if (!response.Success)
                 {
-                    await this.ShowMessageAsync(Tagly.App.Resources.Failure, Tagly.App.Resources.LoginFailure);
+                    await this.ShowMessageAsync(Tagly.App.Resources.Failure, selected.FilePath);
+                    break;
                 }
-                else
-                {
-                    File.Delete(selected.FilePath);
-                    _viewModel.Photos.Remove(_viewModel.SelectedPhoto);
-                    _viewModel.SelectedPhoto = null;
-                    CurrentImage.Source = null;
-                    await this.ShowMessageAsync(Tagly.App.Resources.Success, Tagly.App.Resources.SuccessfullySent);
-                }
+
+                File.Delete(selected.FilePath);
+                _viewModel.Photos.Remove(selected);
+                _viewModel.SelectedPhotos.Remove(selected);
+                CurrentImage.Source = null;
             }
             catch (Exception ex)
             {
                 await this.ShowMessageAsync(Tagly.App.Resources.Failure, ex.Message);
+                break;
             }
         }
+        
+        IsEnabled = true;
+        await this.ShowMessageAsync(Tagly.App.Resources.Success, Tagly.App.Resources.SuccessfullySent);
     }
 
     private async void LoadFiles(object? sender, RoutedEventArgs e)
@@ -170,16 +187,82 @@ public partial class MainWindow : Window
         _mapControl.Map.Navigator.CenterOnAndZoomTo(location, 1);
     }
 
-    private void SelectingItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e) =>
-        LoadImage();
-
-    private void LoadImage()
+    private void SelectingItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (_viewModel.SelectedPhoto == null)
+        if (_viewModel.SelectedPhotos.Count != 1)
         {
+            CurrentImage.Source = null;
+
+            _viewModel.CurrentFileName = string.Join(", ", _viewModel.SelectedPhotos.Select(x => x.FileName).ToArray());
             return;
         }
 
-        CurrentImage.Source = new Bitmap(_viewModel.SelectedPhoto.FilePath);
+        var photo = _viewModel.SelectedPhotos.First();
+        CurrentImage.Source = new Bitmap(photo.FilePath);
+
+        _viewModel.CurrentDate = photo.Date;
+        _viewModel.CurrentLatitude = photo.Latitude;
+        _viewModel.CurrentLongitude = photo.Longitude;
+        _viewModel.CurrentDescription = photo.Description;
+        _viewModel.CurrentFileName = photo.FileName;
+    }
+
+    private void DescriptionChanged(object? sender, TextChangedEventArgs e)
+    {
+        if (_viewModel.SelectedPhotos.Count != 1)
+        {
+            return;
+        }
+        
+        MutateSelected(item => item.Description = _viewModel.CurrentDescription);
+    }
+
+    private void DateChanged(object? sender, DatePickerSelectedValueChangedEventArgs e)
+    {
+        if (_viewModel.SelectedPhotos.Count != 1)
+        {
+            return;
+        }
+        
+        MutateSelected(item => item.Date = _viewModel.CurrentDate);
+    }
+
+    private void LongitudeChanged(object? sender, TextChangedEventArgs e)
+    {
+        if (_viewModel.SelectedPhotos.Count != 1)
+        {
+            return;
+        }
+        
+        MutateSelected(item => item.Longitude = _viewModel.CurrentLongitude);
+    }
+
+    private void LatitudeChanged(object? sender, TextChangedEventArgs e)
+    {
+        if (_viewModel.SelectedPhotos.Count != 1)
+        {
+            return;
+        }
+        
+        MutateSelected(item => item.Latitude = _viewModel.CurrentLatitude);
+    }
+
+    private void MutateSelected(Action<PhotoItem> action)
+    {
+        foreach (var photo in _viewModel.SelectedPhotos)
+        {
+            action(photo);
+        }
+    }
+
+    private void ApplyToSelected(object? sender, RoutedEventArgs e)
+    {
+        MutateSelected(item =>
+        {
+            item.Latitude = _viewModel.CurrentLatitude;
+            item.Longitude = _viewModel.CurrentLongitude;
+            item.Date = _viewModel.CurrentDate;
+            item.Description = _viewModel.CurrentDescription;
+        });
     }
 }

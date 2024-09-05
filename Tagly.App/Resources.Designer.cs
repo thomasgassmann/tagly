@@ -104,5 +104,23 @@ namespace Tagly.App {
                 return ResourceManager.GetString("LoginFailure", resourceCulture);
             }
         }
+        
+        public static string ConfirmSend {
+            get {
+                return ResourceManager.GetString("ConfirmSend", resourceCulture);
+            }
+        }
+        
+        public static string ConfirmSendText {
+            get {
+                return ResourceManager.GetString("ConfirmSendText", resourceCulture);
+            }
+        }
+        
+        public static string ApplyToSelected {
+            get {
+                return ResourceManager.GetString("ApplyToSelected", resourceCulture);
+            }
+        }
     }
 }

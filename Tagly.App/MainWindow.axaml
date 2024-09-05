@@ -38,7 +38,7 @@
             
             <Image Grid.Row="0" Grid.Column="0" x:Name="CurrentImage"></Image>
             
-            <ListBox SelectionChanged="SelectingItemsControl_OnSelectionChanged" SelectedValue="{Binding SelectedPhoto}" SelectionMode="Single" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Photos}">
+            <ListBox SelectionChanged="SelectingItemsControl_OnSelectionChanged" SelectedItems="{Binding SelectedPhotos}" SelectionMode="Multiple" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Photos}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Spacing="2">
@@ -74,16 +74,18 @@
                 <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding CurrentFileName}" />
 
                 <TextBlock Text="Latitude:" FontWeight="Bold"/>
-                <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding CurrentLatitude}" />
+                <TextBox TextChanged="LatitudeChanged" IsReadOnly="True" Margin="0,5" Text="{Binding CurrentLatitude}" />
 
                 <TextBlock Text="Longitude:" FontWeight="Bold"/>
-                <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding CurrentLongitude}" />
+                <TextBox TextChanged="LongitudeChanged" IsReadOnly="True" Margin="0,5" Text="{Binding CurrentLongitude}" />
 
                 <TextBlock Text="Date:" FontWeight="Bold"/>
-                <DatePicker Margin="0,5" SelectedDate="{Binding CurrentDate}" />
+                <DatePicker SelectedDateChanged="DateChanged" Margin="0,5" SelectedDate="{Binding CurrentDate}" />
 
                 <TextBlock Text="Description:" FontWeight="Bold"/>
-                <TextBox AcceptsReturn="True" Height="150" Margin="0,5" Text="{Binding CurrentDescription}" />
+                <TextBox TextChanged="DescriptionChanged" AcceptsReturn="True" Height="150" Margin="0,5" Text="{Binding CurrentDescription}" />
+                
+                <Button HorizontalAlignment="Right" Click="ApplyToSelected" Content="{x:Static app:Resources.ApplyToSelected}" />
             </StackPanel>            
             
             <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="0,10">

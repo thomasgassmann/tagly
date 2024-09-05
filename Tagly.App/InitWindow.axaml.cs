@@ -51,7 +51,7 @@ public partial class InitWindow : Window
         }
         catch (Exception ex)
         {
-            await this.ShowMessageAsync("Failure", ex.Message);
+            await this.ShowMessageAsync(Tagly.App.Resources.LoginFailure, ex.Message);
             return;
         }
 
