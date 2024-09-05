@@ -122,5 +122,35 @@ namespace Tagly.App {
                 return ResourceManager.GetString("ApplyToSelected", resourceCulture);
             }
         }
+        
+        public static string FileNameLabel {
+            get {
+                return ResourceManager.GetString("FileNameLabel", resourceCulture);
+            }
+        }
+        
+        public static string LatitudeLabel {
+            get {
+                return ResourceManager.GetString("LatitudeLabel", resourceCulture);
+            }
+        }
+        
+        public static string LongitudeLabel {
+            get {
+                return ResourceManager.GetString("LongitudeLabel", resourceCulture);
+            }
+        }
+        
+        public static string DateLabel {
+            get {
+                return ResourceManager.GetString("DateLabel", resourceCulture);
+            }
+        }
+        
+        public static string DescriptionLabel {
+            get {
+                return ResourceManager.GetString("DescriptionLabel", resourceCulture);
+            }
+        }
     }
 }

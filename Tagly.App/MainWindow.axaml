@@ -70,19 +70,19 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
-                <TextBlock Text="Filename:" FontWeight="Bold"/>
+                <TextBlock Text="{x:Static app:Resources.FileNameLabel}" FontWeight="Bold"/>
                 <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding CurrentFileName}" />
 
-                <TextBlock Text="Latitude:" FontWeight="Bold"/>
+                <TextBlock Text="{x:Static app:Resources.LatitudeLabel}" FontWeight="Bold"/>
                 <TextBox TextChanged="LatitudeChanged" IsReadOnly="True" Margin="0,5" Text="{Binding CurrentLatitude}" />
 
-                <TextBlock Text="Longitude:" FontWeight="Bold"/>
+                <TextBlock Text="{x:Static app:Resources.LongitudeLabel}" FontWeight="Bold"/>
                 <TextBox TextChanged="LongitudeChanged" IsReadOnly="True" Margin="0,5" Text="{Binding CurrentLongitude}" />
 
-                <TextBlock Text="Date:" FontWeight="Bold"/>
+                <TextBlock Text="{x:Static app:Resources.DateLabel}" FontWeight="Bold"/>
                 <DatePicker SelectedDateChanged="DateChanged" Margin="0,5" SelectedDate="{Binding CurrentDate}" />
 
-                <TextBlock Text="Description:" FontWeight="Bold"/>
+                <TextBlock Text="{x:Static app:Resources.DescriptionLabel}" FontWeight="Bold"/>
                 <TextBox TextChanged="DescriptionChanged" AcceptsReturn="True" Height="150" Margin="0,5" Text="{Binding CurrentDescription}" />
                 
                 <Button HorizontalAlignment="Right" Click="ApplyToSelected" Content="{x:Static app:Resources.ApplyToSelected}" />

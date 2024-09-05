@@ -57,4 +57,19 @@
     <data name="ApplyToSelected" xml:space="preserve">
         <value>Auf selektierte anwenden</value>
     </data>
+    <data name="FileNameLabel" xml:space="preserve">
+        <value>Dateiname:</value>
+    </data>
+    <data name="LatitudeLabel" xml:space="preserve">
+        <value>Breitengrad:</value>
+    </data>
+    <data name="LongitudeLabel" xml:space="preserve">
+        <value>Längengrad:</value>
+    </data>
+    <data name="DateLabel" xml:space="preserve">
+        <value>Datum:</value>
+    </data>
+    <data name="DescriptionLabel" xml:space="preserve">
+        <value>Beschreibung:</value>
+    </data>
 </root>
