@@ -136,7 +136,7 @@ public partial class MainWindow : Window
                     {
                         Latitude = selected.Latitude.GetValueOrDefault(),
                         Longitude = selected.Longitude.GetValueOrDefault(),
-                        Date = Timestamp.FromDateTimeOffset(selected.Date.GetValueOrDefault()),
+                        Date = Timestamp.FromDateTimeOffset(selected.Date.GetValueOrDefault().Date.AddHours(12)),
                         Description = selected.Description,
                         FileName = selected.FileName,
                     }
