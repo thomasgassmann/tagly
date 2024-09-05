@@ -85,9 +85,9 @@
                 <TextBlock Text="{x:Static app:Resources.DescriptionLabel}" FontWeight="Bold"/>
                 <TextBox TextChanged="DescriptionChanged" AcceptsReturn="True" Height="150" Margin="0,5" Text="{Binding CurrentDescription}" />
                 
-                <StackPanel Orientation="Horizontal">
-                    <Button HorizontalAlignment="Right" Click="ResetSelected" Content="{x:Static app:Resources.ResetSelected}" />
-                    <Button HorizontalAlignment="Right" Click="ApplyToSelected" Content="{x:Static app:Resources.ApplyToSelected}" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Margin="5" HorizontalAlignment="Right" Click="ResetSelected" Content="{x:Static app:Resources.ResetSelected}" />
+                    <Button Margin="5" HorizontalAlignment="Right" Click="ApplyToSelected" Content="{x:Static app:Resources.ApplyToSelected}" />
                 </StackPanel>
             </StackPanel>            
             

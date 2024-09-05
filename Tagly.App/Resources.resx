@@ -75,4 +75,7 @@
     <data name="ResetSelected" xml:space="preserve">
         <value>Selektierte zurücksetzen</value>
     </data>
+    <data name="CheckInput" xml:space="preserve">
+        <value>Eingabe überprüfen</value>
+    </data>
 </root>

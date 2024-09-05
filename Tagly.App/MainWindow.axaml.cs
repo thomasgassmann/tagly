@@ -224,7 +224,7 @@ public partial class MainWindow : Window
             return;
         }
         
-        MutateSelected(item => item.Date = _viewModel.CurrentDate);
+        MutateSelected(item => item.Date = e.NewDate);
     }
 
     private void LongitudeChanged(object? sender, TextChangedEventArgs e)

@@ -10,6 +10,7 @@ using Avalonia.Platform.Storage;
 using Microsoft.Extensions.Configuration;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
+using NetTopologySuite.Simplify;
 
 namespace Tagly.App;
 
@@ -40,7 +41,7 @@ public partial class InitWindow : Window
         var backup = Backup.Text;
         if (string.IsNullOrEmpty(Url.Text) || string.IsNullOrEmpty(Token.Text) || !Path.Exists(source) || !Path.Exists(backup))
         {
-            await this.ShowMessageAsync("Failure", "Enter all fields");
+            await this.ShowMessageAsync(Tagly.App.Resources.Failure, Tagly.App.Resources.CheckInput);
             return;
         }
 
