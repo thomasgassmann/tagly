@@ -164,5 +164,17 @@ namespace Tagly.App {
                 return ResourceManager.GetString("CheckInput", resourceCulture);
             }
         }
+        
+        public static string ConfirmReset {
+            get {
+                return ResourceManager.GetString("ConfirmReset", resourceCulture);
+            }
+        }
+        
+        public static string ConfirmResetText {
+            get {
+                return ResourceManager.GetString("ConfirmResetText", resourceCulture);
+            }
+        }
     }
 }

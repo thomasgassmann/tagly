@@ -266,8 +266,18 @@ public partial class MainWindow : Window
         });
     }
 
-    private void ResetSelected(object? sender, RoutedEventArgs e)
+    private async void ResetSelected(object? sender, RoutedEventArgs e)
     {
+        var box = MessageBoxManager.GetMessageBoxStandard(
+            Tagly.App.Resources.ConfirmReset, 
+            string.Format(Tagly.App.Resources.ConfirmResetText, _viewModel.SelectedPhotos.Count), 
+            ButtonEnum.YesNo);
+        var result = await box.ShowWindowDialogAsync(this);
+        if (result != ButtonResult.Yes)
+        {
+            return;
+        }
+        
         MutateSelected(item =>
         {
             item.Latitude = null;

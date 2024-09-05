@@ -78,4 +78,10 @@
     <data name="CheckInput" xml:space="preserve">
         <value>Eingabe überprüfen</value>
     </data>
+    <data name="ConfirmReset" xml:space="preserve">
+        <value>Zurücksetzen</value>
+    </data>
+    <data name="ConfirmResetText" xml:space="preserve">
+        <value>{0} Fotos zurücksetzen?</value>
+    </data>
 </root>
