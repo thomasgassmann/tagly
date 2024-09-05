@@ -6,7 +6,7 @@ using Tagly.Grpc;
 
 namespace Tagly.App;
 
-public class GrpcPhotosClient(string url, string token)
+public class GrpcPhotosClient(string url, string token, bool secure)
 {
     public Photos.PhotosClient Client => new(CreateAuthenticatedChannel());
 
@@ -34,7 +34,10 @@ public class GrpcPhotosClient(string url, string token)
 
         var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions
         {
-            Credentials = ChannelCredentials.Create(new SslCredentials(), credentials)
+            Credentials = ChannelCredentials.Create(secure ? ChannelCredentials.SecureSsl : ChannelCredentials.Insecure, credentials),
+            UnsafeUseInsecureChannelCallCredentials = !secure,
+            MaxSendMessageSize = int.MaxValue,
+            MaxReceiveMessageSize = int.MaxValue
         });
         return channel;
     }

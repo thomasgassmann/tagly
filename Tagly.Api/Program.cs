@@ -7,9 +7,14 @@ using Tagly.Db;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var dbPath = builder.Configuration["DbPath"];
 builder.Services.AddDbContext<TaglyContext>(opt =>
-    opt.UseSqlite(builder.Configuration["ConnectionString"]));
-builder.Services.AddGrpc();
+    opt.UseSqlite($"Data Source={dbPath}" ));
+builder.Services.AddGrpc(options =>
+{
+    options.MaxReceiveMessageSize = int.MaxValue;
+    options.MaxSendMessageSize = int.MaxValue;
+});
 builder.Services.AddGrpcReflection();
 builder.Services.AddAuthentication(options =>
 {
@@ -32,6 +37,13 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+if (!File.Exists(dbPath))
+{
+    using var serviceScope = app.Services.CreateScope();
+    var context = serviceScope.ServiceProvider.GetRequiredService<TaglyContext>();
+    context.Database.Migrate();
+}
 
 app.UseRouting();
 app.UseAuthentication();

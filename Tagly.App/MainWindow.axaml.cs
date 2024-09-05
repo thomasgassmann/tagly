@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Net.Client;
 using Mapsui;
 using Mapsui.Layers;
@@ -108,13 +110,53 @@ public partial class MainWindow : Window
         File.Copy(path, Path.Combine(_backupPath, Guid.NewGuid().ToString() + fileName));
     }
 
-    private async void SendAllClick(object? sender, RoutedEventArgs e)
+    private async void SendClick(object? sender, RoutedEventArgs e)
     {
+        if (_viewModel.SelectedPhoto == null)
+        {
+            await MessageBoxManager.GetMessageBoxStandard("None selected", "Please select a photo first", ButtonEnum.Ok).ShowAsync();
+            return;
+        }
+
+        var selected = _viewModel.SelectedPhoto;
         var box = MessageBoxManager.GetMessageBoxStandard("Confirm", "Alle senden?", ButtonEnum.YesNo);
         var result = await box.ShowAsync();
         if (result == ButtonResult.Yes)
         {
+            try
+            {
+                BackupPhoto(selected.FilePath);
+                var content = await File.ReadAllBytesAsync(selected.FilePath);
+                var byteString = ByteString.CopyFrom(content);
+            
+                var response = await _client.Client.AddPhotoAsync(new ServerPhoto
+                {
+                    Data = byteString,
+                    Meta = new ServerPhotoMeta
+                    {
+                        Latitude = selected.Latitude.GetValueOrDefault(),
+                        Longitude = selected.Longitude.GetValueOrDefault(),
+                        Date = Timestamp.FromDateTimeOffset(selected.Date.GetValueOrDefault()),
+                        Description = selected.Description,
+                        FileName = selected.FileName,
+                    }
+                });
 
+                if (!response.Success)
+                {
+                    await MessageBoxManager.GetMessageBoxStandard("Failure", "That did not work", ButtonEnum.Ok).ShowAsync();
+                }
+                else
+                {
+                    File.Delete(selected.FilePath);
+                    _viewModel.Photos.Remove(_viewModel.SelectedPhoto);
+                    _viewModel.SelectedPhoto = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                await MessageBoxManager.GetMessageBoxStandard("Failure", ex.Message, ButtonEnum.Ok).ShowAsync();
+            }
         }
     }
 

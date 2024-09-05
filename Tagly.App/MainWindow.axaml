@@ -89,7 +89,7 @@
             </Border>
             
             <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <Button Margin="2" Click="SendAllClick">Send all</Button>
+                <Button Margin="2" Click="SendClick">Send selected</Button>
                 <Button Margin="2" Click="LoadFiles">Load from directory</Button>
                 <Button Margin="2" Click="GoHomeClick">Go Home</Button>
             </StackPanel>

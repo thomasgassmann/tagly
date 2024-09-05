@@ -17,6 +17,7 @@ public partial class InitWindow : Window
 {
     private readonly double _defaultLatitude = 0;
     private readonly double _defaultLongitude = 0;
+    private readonly bool _secure = true;
     
     public InitWindow()
     {
@@ -28,8 +29,9 @@ public partial class InitWindow : Window
         Source.Text = config["DefaultSourcePath"];
         Backup.Text = config["DefaultBackupPath"];
         Url.Text = config["DefaultUrl"];
-        _defaultLatitude = double.Parse(config["DefaultLatitude"]!);
-        _defaultLongitude = double.Parse(config["DefaultLongitude"]!);
+        _defaultLatitude = config.GetValue<double>("DefaultLatitude");
+        _defaultLongitude = config.GetValue<double>("DefaultLongitude");
+        _secure = config.GetValue<bool>("Secure");
     }
 
     private async void Login(object? sender, RoutedEventArgs e)
@@ -41,7 +43,7 @@ public partial class InitWindow : Window
             return;
         }
 
-        var client = new GrpcPhotosClient(Url.Text, Token.Text);
+        var client = new GrpcPhotosClient(Url.Text, Token.Text, _secure);
         try
         {
             await client.GetJwtAsync();
