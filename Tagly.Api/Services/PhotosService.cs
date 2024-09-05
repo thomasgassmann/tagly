@@ -6,16 +6,9 @@ using Tagly.Grpc;
 
 namespace Tagly.Api.Services;
 
-public class PhotosService : Photos.PhotosBase
+public class PhotosService(ILogger<PhotosService> logger, TaglyContext dbContext) : Photos.PhotosBase
 {
-    private readonly ILogger<PhotosService> _logger;
-    private readonly TaglyContext _context;
-
-    public PhotosService(ILogger<PhotosService> logger, TaglyContext context)
-    {
-        _logger = logger;
-        _context = context;
-    }
+    private readonly ILogger<PhotosService> _logger = logger;
 
     public override async Task<PhotoCreationStatus> AddPhoto(ServerPhoto request, ServerCallContext context)
     {
@@ -23,7 +16,7 @@ public class PhotosService : Photos.PhotosBase
         using var requestStream = new MemoryStream(requestBytes);
         var image = await Image.LoadAsync(requestStream, context.CancellationToken);
 
-        var entity = await _context.AddAsync(new StoredPhoto
+        var entity = await dbContext.AddAsync(new StoredPhoto
         {
             Id = 0,
             Data = requestBytes,
@@ -33,7 +26,7 @@ public class PhotosService : Photos.PhotosBase
             Latitude = request.Meta.Latitude,
             Longitude = request.Meta.Longitude
         });
-        await _context.SaveChangesAsync(context.CancellationToken);
+        await dbContext.SaveChangesAsync(context.CancellationToken);
         return new PhotoCreationStatus
         {
             Success = true,

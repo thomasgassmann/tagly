@@ -187,7 +187,7 @@ public partial class MainWindow : Window
         _mapControl.Map.Navigator.CenterOnAndZoomTo(location, 1);
     }
 
-    private void SelectingItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private async void SelectingItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (_viewModel.SelectedPhotos.Count != 1)
         {
@@ -198,13 +198,20 @@ public partial class MainWindow : Window
         }
 
         var photo = _viewModel.SelectedPhotos.First();
-        CurrentImage.Source = new Bitmap(photo.FilePath);
-
-        _viewModel.CurrentDate = photo.Date;
-        _viewModel.CurrentLatitude = photo.Latitude;
-        _viewModel.CurrentLongitude = photo.Longitude;
-        _viewModel.CurrentDescription = photo.Description;
-        _viewModel.CurrentFileName = photo.FileName;
+        try
+        {
+            CurrentImage.Source = new Bitmap(photo.FilePath);
+            
+            _viewModel.CurrentDate = photo.Date;
+            _viewModel.CurrentLatitude = photo.Latitude;
+            _viewModel.CurrentLongitude = photo.Longitude;
+            _viewModel.CurrentDescription = photo.Description;
+            _viewModel.CurrentFileName = photo.FileName;
+        }
+        catch (Exception ex)
+        {
+            await this.ShowMessageAsync(Tagly.App.Resources.Failure, ex.Message);
+        }
     }
 
     private void DescriptionChanged(object? sender, TextChangedEventArgs e)
