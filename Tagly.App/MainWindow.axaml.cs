@@ -114,13 +114,13 @@ public partial class MainWindow : Window
     {
         if (_viewModel.SelectedPhoto == null)
         {
-            await MessageBoxManager.GetMessageBoxStandard("None selected", "Please select a photo first", ButtonEnum.Ok).ShowAsync();
+            await MessageBoxManager.GetMessageBoxStandard("None selected", "Please select a photo first", ButtonEnum.Ok).ShowWindowDialogAsync(this);
             return;
         }
 
         var selected = _viewModel.SelectedPhoto;
         var box = MessageBoxManager.GetMessageBoxStandard("Confirm", "Alle senden?", ButtonEnum.YesNo);
-        var result = await box.ShowAsync();
+        var result = await box.ShowWindowDialogAsync(this);
         if (result == ButtonResult.Yes)
         {
             try
@@ -144,7 +144,7 @@ public partial class MainWindow : Window
 
                 if (!response.Success)
                 {
-                    await MessageBoxManager.GetMessageBoxStandard("Failure", "That did not work", ButtonEnum.Ok).ShowAsync();
+                    await MessageBoxManager.GetMessageBoxStandard("Failure", "That did not work", ButtonEnum.Ok).ShowWindowDialogAsync(this);
                 }
                 else
                 {
@@ -155,7 +155,7 @@ public partial class MainWindow : Window
             }
             catch (Exception ex)
             {
-                await MessageBoxManager.GetMessageBoxStandard("Failure", ex.Message, ButtonEnum.Ok).ShowAsync();
+                await MessageBoxManager.GetMessageBoxStandard("Failure", ex.Message, ButtonEnum.Ok).ShowWindowDialogAsync(this);
             }
         }
     }
