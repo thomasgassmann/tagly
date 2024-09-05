@@ -14,7 +14,21 @@ public class PhotosService(ILogger<PhotosService> logger, TaglyContext dbContext
     {
         var requestBytes = request.Data.ToArray();
         using var requestStream = new MemoryStream(requestBytes);
-        var image = await Image.LoadAsync(requestStream, context.CancellationToken);
+        
+        // verify that we're dealing with an image
+        try
+        {
+            await Image.LoadAsync(requestStream, context.CancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed adding photo: {message}", ex.Message);
+            return new PhotoCreationStatus
+            {
+                Success = false,
+                CreatedId = -1
+            };
+        }
 
         var entity = await dbContext.AddAsync(new StoredPhoto
         {
