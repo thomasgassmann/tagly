@@ -83,7 +83,7 @@ public partial class MainWindow : Window
     private void UpdateFilesFromSource()
     {
         var currentPhotos = _viewModel.Photos.ToDictionary(x => x.FilePath, x => x);
-        var files = Directory.GetFiles(_sourcePath);
+        var files = Directory.GetFiles(_sourcePath).OrderBy(x => x);
         foreach (var file in files)
         {
             if (!currentPhotos.ContainsKey(file))
