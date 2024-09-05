@@ -72,4 +72,7 @@
     <data name="DescriptionLabel" xml:space="preserve">
         <value>Beschreibung:</value>
     </data>
+    <data name="ResetSelected" xml:space="preserve">
+        <value>Selektierte zurücksetzen</value>
+    </data>
 </root>

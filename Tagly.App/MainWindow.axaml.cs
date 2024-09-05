@@ -265,4 +265,15 @@ public partial class MainWindow : Window
             item.Description = _viewModel.CurrentDescription;
         });
     }
+
+    private void ResetSelected(object? sender, RoutedEventArgs e)
+    {
+        MutateSelected(item =>
+        {
+            item.Latitude = null;
+            item.Longitude = null;
+            item.Date = null;
+            item.Description = null;
+        });
+    }
 }

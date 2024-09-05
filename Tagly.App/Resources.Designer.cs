@@ -152,5 +152,11 @@ namespace Tagly.App {
                 return ResourceManager.GetString("DescriptionLabel", resourceCulture);
             }
         }
+        
+        public static string ResetSelected {
+            get {
+                return ResourceManager.GetString("ResetSelected", resourceCulture);
+            }
+        }
     }
 }
