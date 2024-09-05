@@ -5,8 +5,10 @@
         xmlns:app="clr-namespace:Tagly.App"
         xmlns:vm="using:Tagly.App.ViewModels"
         xmlns:m="using:Tagly.App.Models"
-        Width="1250"
+        Width="1350"
         Height="750"
+        MinHeight="750"
+        MinWidth="1350"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Tagly.App.MainWindow"
         Loaded="Control_OnLoaded"
@@ -89,9 +91,9 @@
             </Border>
             
             <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <Button Margin="2" Click="SendClick">Send selected</Button>
-                <Button Margin="2" Click="LoadFiles">Load from directory</Button>
-                <Button Margin="2" Click="GoHomeClick">Go Home</Button>
+                <Button Margin="2" Click="SendClick" Content="{x:Static app:Resources.FinishSelected}" />
+                <Button Margin="2" Click="LoadFiles" Content="{x:Static app:Resources.LoadFromDirectory}" />
+                <Button Margin="2" Click="GoHomeClick" Content="{x:Static app:Resources.CenterMap}" />
             </StackPanel>
         </Grid>
 

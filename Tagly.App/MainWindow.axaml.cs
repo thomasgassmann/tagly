@@ -1,16 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
-using Grpc.Net.Client;
 using Mapsui;
 using Mapsui.Layers;
 using Mapsui.Nts;
@@ -20,14 +16,10 @@ using Mapsui.Tiling;
 using Mapsui.UI.Avalonia;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Jpeg;
-using SixLabors.ImageSharp.Processing;
 using Tagly.App.Models;
 using Tagly.App.ViewModels;
 using Tagly.Grpc;
 using Bitmap = Avalonia.Media.Imaging.Bitmap;
-using Image = SixLabors.ImageSharp.Image;
 using Point = NetTopologySuite.Geometries.Point;
 
 namespace Tagly.App;
@@ -114,7 +106,7 @@ public partial class MainWindow : Window
     {
         if (_viewModel.SelectedPhoto == null)
         {
-            await MessageBoxManager.GetMessageBoxStandard("None selected", "Please select a photo first", ButtonEnum.Ok).ShowWindowDialogAsync(this);
+            await this.ShowMessageAsync("None selected", "Please select a photo first");
             return;
         }
 
@@ -137,31 +129,36 @@ public partial class MainWindow : Window
                         Latitude = selected.Latitude.GetValueOrDefault(),
                         Longitude = selected.Longitude.GetValueOrDefault(),
                         Date = Timestamp.FromDateTimeOffset(selected.Date.GetValueOrDefault().Date.AddHours(12)),
-                        Description = selected.Description,
+                        Description = selected.Description ?? string.Empty,
                         FileName = selected.FileName,
                     }
                 });
 
                 if (!response.Success)
                 {
-                    await MessageBoxManager.GetMessageBoxStandard("Failure", "That did not work", ButtonEnum.Ok).ShowWindowDialogAsync(this);
+                    await this.ShowMessageAsync(Tagly.App.Resources.Failure, Tagly.App.Resources.LoginFailure);
                 }
                 else
                 {
                     File.Delete(selected.FilePath);
                     _viewModel.Photos.Remove(_viewModel.SelectedPhoto);
                     _viewModel.SelectedPhoto = null;
+                    CurrentImage.Source = null;
+                    await this.ShowMessageAsync(Tagly.App.Resources.Success, Tagly.App.Resources.SuccessfullySent);
                 }
             }
             catch (Exception ex)
             {
-                await MessageBoxManager.GetMessageBoxStandard("Failure", ex.Message, ButtonEnum.Ok).ShowWindowDialogAsync(this);
+                await this.ShowMessageAsync(Tagly.App.Resources.Failure, ex.Message);
             }
         }
     }
 
-    private void LoadFiles(object? sender, RoutedEventArgs e) =>
+    private async void LoadFiles(object? sender, RoutedEventArgs e)
+    {
         UpdateFilesFromSource();
+        await this.ShowMessageAsync(Tagly.App.Resources.Success, Tagly.App.Resources.SuccessfullyLoaded);
+    }
 
     private void Control_OnLoaded(object? sender, RoutedEventArgs e) =>
         UpdateFilesFromSource();

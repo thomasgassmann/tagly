@@ -40,6 +40,7 @@ public partial class InitWindow : Window
         var backup = Backup.Text;
         if (string.IsNullOrEmpty(Url.Text) || string.IsNullOrEmpty(Token.Text) || !Path.Exists(source) || !Path.Exists(backup))
         {
+            await this.ShowMessageAsync("Failure", "Enter all fields");
             return;
         }
 
@@ -50,7 +51,7 @@ public partial class InitWindow : Window
         }
         catch (Exception ex)
         {
-            await MessageBoxManager.GetMessageBoxStandard("Failure", ex.Message, ButtonEnum.Ok).ShowWindowDialogAsync(this);
+            await this.ShowMessageAsync("Failure", ex.Message);
             return;
         }
 
