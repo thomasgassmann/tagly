@@ -58,6 +58,7 @@ public partial class InitWindow : Window
 
         Hide();
         new MainWindow(client, source, backup, _defaultLatitude, _defaultLongitude).Show();
+        Close();
     }
 
     private async Task SelectDirectory(TextBox textBox, string title)
