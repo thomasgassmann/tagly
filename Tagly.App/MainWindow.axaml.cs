@@ -128,6 +128,7 @@ public partial class MainWindow : Window
         }
 
         IsEnabled = false;
+        var failure = false;
         foreach (var selected in selectedItems)
         {
             try
@@ -152,6 +153,7 @@ public partial class MainWindow : Window
                 if (!response.Success)
                 {
                     await this.ShowMessageAsync(Tagly.App.Resources.Failure, selected.FilePath);
+                    failure = true;
                     break;
                 }
 
@@ -168,7 +170,10 @@ public partial class MainWindow : Window
         }
         
         IsEnabled = true;
-        await this.ShowMessageAsync(Tagly.App.Resources.Success, Tagly.App.Resources.SuccessfullySent);
+        if (!failure)
+        {
+            await this.ShowMessageAsync(Tagly.App.Resources.Success, Tagly.App.Resources.SuccessfullySent);
+        }
     }
 
     private async void LoadFiles(object? sender, RoutedEventArgs e)
