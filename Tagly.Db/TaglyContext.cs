@@ -7,12 +7,12 @@ public class TaglyContext : DbContext
     public DbSet<StoredPhoto> Photos { get; set; }
 
     private readonly string? _dbPath;
-    
+
     public TaglyContext(string dbPath)
     {
         _dbPath = dbPath;
     }
-    
+
     public TaglyContext(DbContextOptions<TaglyContext> options) : base(options)
     {
     }
@@ -29,4 +29,3 @@ public class TaglyContext : DbContext
         }
     }
 }
-

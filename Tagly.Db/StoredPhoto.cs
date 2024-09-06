@@ -6,6 +6,7 @@ public class StoredPhoto
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
+
     public required string FileName { get; set; }
     public required byte[] Data { get; set; }
     public DateTime? Date { get; set; }

@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var dbPath = builder.Configuration["DbPath"];
 builder.Services.AddDbContext<TaglyContext>(opt =>
-    opt.UseSqlite($"Data Source={dbPath}" ));
+    opt.UseSqlite($"Data Source={dbPath}"));
 builder.Services.AddGrpc(options =>
 {
     options.MaxReceiveMessageSize = int.MaxValue;
@@ -36,10 +36,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 builder.Services.AddAuthorization();
-builder.Services.Configure<KestrelServerOptions>(options =>
-{
-    options.Limits.MaxRequestBodySize = int.MaxValue;
-});
+builder.Services.Configure<KestrelServerOptions>(options => { options.Limits.MaxRequestBodySize = int.MaxValue; });
 
 var app = builder.Build();
 

@@ -37,7 +37,7 @@ public class Exporter(TaglyContext context, string outputPath, ILogger<Exporter>
     {
         using var stream = new MemoryStream(storedPhoto.Data);
         using var image = await Image.LoadAsync(stream);
-        
+
         // now add Description, Longitude, Latitude and Date to photo
         if (image.Metadata.ExifProfile == null)
         {
@@ -51,13 +51,18 @@ public class Exporter(TaglyContext context, string outputPath, ILogger<Exporter>
             image.Metadata.ExifProfile.SetValue(ExifTag.DateTimeOriginal, storedPhoto.Date.Value.ToString(format));
         }
 
-        if (storedPhoto is { Longitude: not null, Latitude: not null } && !(storedPhoto.Longitude.Value == 0 && storedPhoto.Latitude.Value == 0))
+        if (storedPhoto is { Longitude: not null, Latitude: not null } &&
+            !(storedPhoto.Longitude.Value == 0 && storedPhoto.Latitude.Value == 0))
         {
-            image.Metadata.ExifProfile.SetValue(ExifTag.GPSLongitude, ConvertDecimalToRational(Math.Abs(storedPhoto.Longitude.Value)));
-            image.Metadata.ExifProfile.SetValue(ExifTag.GPSLatitude, ConvertDecimalToRational(Math.Abs(storedPhoto.Latitude.Value)));
-            
-            image.Metadata.ExifProfile.SetValue(ExifTag.GPSLongitudeRef, Math.Sign(storedPhoto.Longitude.Value) > 0 ? "E" : "W");
-            image.Metadata.ExifProfile.SetValue(ExifTag.GPSLatitudeRef, Math.Sign(storedPhoto.Latitude.Value) > 0 ? "N" : "S");
+            image.Metadata.ExifProfile.SetValue(ExifTag.GPSLongitude,
+                ConvertDecimalToRational(Math.Abs(storedPhoto.Longitude.Value)));
+            image.Metadata.ExifProfile.SetValue(ExifTag.GPSLatitude,
+                ConvertDecimalToRational(Math.Abs(storedPhoto.Latitude.Value)));
+
+            image.Metadata.ExifProfile.SetValue(ExifTag.GPSLongitudeRef,
+                Math.Sign(storedPhoto.Longitude.Value) > 0 ? "E" : "W");
+            image.Metadata.ExifProfile.SetValue(ExifTag.GPSLatitudeRef,
+                Math.Sign(storedPhoto.Latitude.Value) > 0 ? "N" : "S");
         }
 
         if (!string.IsNullOrWhiteSpace(storedPhoto.Description))
@@ -71,10 +76,10 @@ public class Exporter(TaglyContext context, string outputPath, ILogger<Exporter>
 
             image.Metadata.IptcProfile.SetValue(IptcTag.Caption, storedPhoto.Description);
         }
-        
+
         await image.SaveAsync(fileName);
     }
-    
+
     private static Rational[] ConvertDecimalToRational(double decimalValue)
     {
         var degrees = (int)Math.Floor(decimalValue);

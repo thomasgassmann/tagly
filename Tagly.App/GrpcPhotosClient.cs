@@ -23,7 +23,7 @@ public class GrpcPhotosClient(string url, string token, bool secure)
         });
         return response.JwtToken;
     }
-    
+
     private GrpcChannel CreateAuthenticatedChannel()
     {
         var credentials = CallCredentials.FromInterceptor(async (context, metadata) =>
@@ -31,13 +31,14 @@ public class GrpcPhotosClient(string url, string token, bool secure)
             var jwt = await GetJwtAsync();
             if (!string.IsNullOrEmpty(jwt))
             {
-                metadata.Add("Authorization", $"Bearer {jwt}"); 
+                metadata.Add("Authorization", $"Bearer {jwt}");
             }
         });
 
         var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions
         {
-            Credentials = ChannelCredentials.Create(secure ? ChannelCredentials.SecureSsl : ChannelCredentials.Insecure, credentials),
+            Credentials = ChannelCredentials.Create(secure ? ChannelCredentials.SecureSsl : ChannelCredentials.Insecure,
+                credentials),
             UnsafeUseInsecureChannelCallCredentials = !secure,
             MaxSendMessageSize = int.MaxValue,
             MaxReceiveMessageSize = int.MaxValue

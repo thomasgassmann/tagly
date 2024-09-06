@@ -31,7 +31,7 @@ public class PhotoItem : ReactiveObject
         get => _latitude;
         set
         {
-            this.RaiseAndSetIfChanged(ref _latitude, value); 
+            this.RaiseAndSetIfChanged(ref _latitude, value);
             this.RaisePropertyChanged(nameof(LatitudeString));
         }
     }

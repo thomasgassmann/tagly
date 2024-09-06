@@ -1,4 +1,3 @@
-
 using Grpc.Core;
 using SixLabors.ImageSharp;
 using Tagly.Db;
@@ -14,7 +13,7 @@ public class PhotosService(ILogger<PhotosService> logger, TaglyContext dbContext
     {
         var requestBytes = request.Data.ToArray();
         using var requestStream = new MemoryStream(requestBytes);
-        
+
         // verify that we're dealing with an image
         try
         {

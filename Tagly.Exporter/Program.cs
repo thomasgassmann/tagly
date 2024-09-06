@@ -43,15 +43,15 @@ public class Program
             IsRequired = false
         };
         removeFromDbOption.SetDefaultValue(false);
-        
+
         var rootCommand = new RootCommand("Tagly Exporter");
         rootCommand.AddOption(dbPathOption);
         rootCommand.AddOption(outputPathOption);
         rootCommand.AddOption(removeFromDbOption);
-        
+
         var logger = LoggerFactory.Create(
             builder => builder.AddConsole());
-        
+
         rootCommand.SetHandler(async (dbPath, outputPath, removeFromDb) =>
         {
             var context = new TaglyContext(dbPath.FullName);

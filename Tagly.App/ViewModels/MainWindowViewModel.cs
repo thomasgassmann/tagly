@@ -20,10 +20,7 @@ public class MainWindowViewModel : ReactiveObject
     public string? CurrentDescription
     {
         get => _currentDescription;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _currentDescription, value);
-        }
+        set { this.RaiseAndSetIfChanged(ref _currentDescription, value); }
     }
 
     public string? CurrentFileName
@@ -35,27 +32,18 @@ public class MainWindowViewModel : ReactiveObject
     public double? CurrentLatitude
     {
         get => _currentLatitude;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _currentLatitude, value);
-        }
+        set { this.RaiseAndSetIfChanged(ref _currentLatitude, value); }
     }
 
     public double? CurrentLongitude
     {
         get => _currentLongitude;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _currentLongitude, value);
-        }
+        set { this.RaiseAndSetIfChanged(ref _currentLongitude, value); }
     }
 
     public DateTimeOffset? CurrentDate
     {
         get => _currentDate;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _currentDate, value);
-        }
+        set { this.RaiseAndSetIfChanged(ref _currentDate, value); }
     }
 }
