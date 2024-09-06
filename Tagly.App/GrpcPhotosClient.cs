@@ -12,7 +12,10 @@ public class GrpcPhotosClient(string url, string token, bool secure)
 
     public async Task<string> GetJwtAsync()
     {
-        using var channel = GrpcChannel.ForAddress(url);
+        using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions
+        {
+            Credentials = secure ? ChannelCredentials.SecureSsl : ChannelCredentials.Insecure
+        });
         var client = new Auth.AuthClient(channel);
         var response = await client.LoginAsync(new AuthRequest
         {
