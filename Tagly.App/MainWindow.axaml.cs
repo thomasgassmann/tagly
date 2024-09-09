@@ -136,7 +136,8 @@ public partial class MainWindow : Window
                 BackupPhoto(selected.FilePath);
                 var content = await File.ReadAllBytesAsync(selected.FilePath);
                 var byteString = ByteString.CopyFrom(content);
-            
+
+                var dateTime = selected.Date.GetValueOrDefault().LocalDateTime;
                 var response = await _client.Client.AddPhotoAsync(new ServerPhoto
                 {
                     Data = byteString,
@@ -144,7 +145,7 @@ public partial class MainWindow : Window
                     {
                         Latitude = selected.Latitude.GetValueOrDefault(),
                         Longitude = selected.Longitude.GetValueOrDefault(),
-                        Date = Timestamp.FromDateTimeOffset(selected.Date.GetValueOrDefault().Date.AddHours(12)),
+                        Date = Timestamp.FromDateTime(DateTime.SpecifyKind(dateTime, DateTimeKind.Utc)),
                         Description = selected.Description ?? string.Empty,
                         FileName = selected.FileName,
                     }
@@ -236,7 +237,7 @@ public partial class MainWindow : Window
             return;
         }
         
-        MutateSelected(item => item.Date = e.NewDate);
+        MutateSelected(item => item.Date = MainWindowViewModel.GetDateTimeOffset(e.NewDate, _viewModel.CurrentTime));
     }
 
     private void LongitudeChanged(object? sender, TextChangedEventArgs e)
@@ -259,6 +260,16 @@ public partial class MainWindow : Window
         MutateSelected(item => item.Latitude = _viewModel.CurrentLatitude);
     }
 
+    private void TimeChanged(object? sender, TimePickerSelectedValueChangedEventArgs e)
+    {
+        if (_viewModel.SelectedPhotos.Count != 1)
+        {
+            return;
+        }
+
+        MutateSelected(item => item.Date = MainWindowViewModel.GetDateTimeOffset(_viewModel.CurrentDate, e.NewTime));
+    }
+
     private void MutateSelected(Action<PhotoItem> action)
     {
         foreach (var photo in _viewModel.SelectedPhotos)
@@ -273,7 +284,7 @@ public partial class MainWindow : Window
         {
             item.Latitude = _viewModel.CurrentLatitude;
             item.Longitude = _viewModel.CurrentLongitude;
-            item.Date = _viewModel.CurrentDate;
+            item.Date = _viewModel.CurrentDateTimeOffset;
             item.Description = _viewModel.CurrentDescription;
         });
     }

@@ -56,7 +56,7 @@ public class PhotoItem : ReactiveObject
         }
     }
 
-    public string DateString => Date?.ToString("dd.MM.yyyy") ?? "";
+    public string DateString => Date?.ToString("dd.MM.yyyy HH:mm") ?? "";
     public string LongitudeString => $"{Longitude:0.####}";
     public string LatitudeString => $"{Latitude:0.####}";
     public string FileName => Path.GetFileName(FilePath);

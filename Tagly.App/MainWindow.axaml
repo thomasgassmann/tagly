@@ -5,10 +5,10 @@
         xmlns:app="clr-namespace:Tagly.App"
         xmlns:vm="using:Tagly.App.ViewModels"
         xmlns:m="using:Tagly.App.Models"
-        Width="1350"
+        Width="1400"
         Height="750"
         MinHeight="750"
-        MinWidth="1350"
+        MinWidth="1400"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Tagly.App.MainWindow"
         Loaded="Control_OnLoaded"
@@ -51,7 +51,7 @@
                                 <TextBlock Text="{Binding LongitudeString}"/>
                                 <TextBlock>°E</TextBlock>
                             </StackPanel>
-                            <TextBlock Width="100" Text="{Binding DateString}" />
+                            <TextBlock Width="150" Text="{Binding DateString}" />
                             <TextBlock Text="{Binding Description}"/>
                         </StackPanel>
                     </DataTemplate>
@@ -80,7 +80,10 @@
                 <TextBox TextChanged="LongitudeChanged" IsReadOnly="True" Margin="0,5" Text="{Binding CurrentLongitude}" />
 
                 <TextBlock Text="{x:Static app:Resources.DateLabel}" FontWeight="Bold"/>
-                <DatePicker SelectedDateChanged="DateChanged" Margin="0,5" SelectedDate="{Binding CurrentDate}" />
+                <StackPanel Orientation="Horizontal">
+                    <DatePicker SelectedDateChanged="DateChanged" Margin="0,5" SelectedDate="{Binding CurrentDate}" />
+                    <TimePicker SelectedTimeChanged="TimeChanged" ClockIdentifier="24HourClock" Margin="5,5" SelectedTime="{Binding CurrentTime}" />
+                </StackPanel>
 
                 <TextBlock Text="{x:Static app:Resources.DescriptionLabel}" FontWeight="Bold"/>
                 <TextBox TextChanged="DescriptionChanged" AcceptsReturn="True" Height="150" Margin="0,5" Text="{Binding CurrentDescription}" />
