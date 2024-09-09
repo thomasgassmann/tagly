@@ -43,21 +43,40 @@ public class Program
             IsRequired = false
         };
         removeFromDbOption.SetDefaultValue(false);
+        
+        var copyDbOption = new Option<bool>(
+            name: "--copy-db",
+            description: "Copies the database to the output directory")
+        {
+            IsRequired = false
+        };
+        copyDbOption.SetDefaultValue(false);
 
         var rootCommand = new RootCommand("Tagly Exporter");
         rootCommand.AddOption(dbPathOption);
         rootCommand.AddOption(outputPathOption);
         rootCommand.AddOption(removeFromDbOption);
+        rootCommand.AddOption(copyDbOption);
 
         var logger = LoggerFactory.Create(
             builder => builder.AddConsole());
 
-        rootCommand.SetHandler(async (dbPath, outputPath, removeFromDb) =>
+        rootCommand.SetHandler(async (dbPath, outputPath, removeFromDb, copyDb) =>
         {
             var context = new TaglyContext(dbPath.FullName);
             var exporter = new Exporter(context, outputPath.FullName, logger.CreateLogger<Exporter>());
-            await exporter.Export(removeFromDb);
-        }, dbPathOption, outputPathOption, removeFromDbOption);
+            await exporter.ExportAsync();
+            if (copyDb)
+            {
+                var dbOutputPath = Path.Combine(outputPath.FullName, dbPath.Name);
+                File.Copy(dbPath.FullName, dbOutputPath);                
+            }
+            
+            if (removeFromDb)
+            {
+                await exporter.RemoveFromDbAsync();
+            }
+        }, dbPathOption, outputPathOption, removeFromDbOption, copyDbOption);
 
         return await rootCommand.InvokeAsync(args);
     }

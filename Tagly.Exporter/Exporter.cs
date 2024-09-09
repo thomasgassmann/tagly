@@ -9,9 +9,10 @@ namespace Tagly.Exporter;
 
 public class Exporter(TaglyContext context, string outputPath, ILogger<Exporter> logger)
 {
-    public async Task Export(bool removeFromDb)
+    private readonly IList<StoredPhoto> _exportedPhotos = new List<StoredPhoto>();
+    
+    public async Task ExportAsync()
     {
-        var removedItems = new List<StoredPhoto>();
         await foreach (var item in context.Photos)
         {
             var fileName = Path.Combine(outputPath, $"{item.Id}-{item.FileName}");
@@ -23,14 +24,15 @@ public class Exporter(TaglyContext context, string outputPath, ILogger<Exporter>
             }
 
             await ExportSingle(item, fileName);
-            removedItems.Add(item);
+            _exportedPhotos.Add(item);
         }
+    }
 
-        if (removeFromDb)
-        {
-            context.Photos.RemoveRange(removedItems);
-            await context.SaveChangesAsync();
-        }
+    public async Task RemoveFromDbAsync()
+    {
+        logger.LogInformation("Removing {} photos from db...", _exportedPhotos.Count);
+        context.Photos.RemoveRange(_exportedPhotos);
+        await context.SaveChangesAsync();
     }
 
     private async Task ExportSingle(StoredPhoto storedPhoto, string fileName)
