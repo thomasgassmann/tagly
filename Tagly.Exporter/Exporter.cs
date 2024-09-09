@@ -14,7 +14,7 @@ public class Exporter(TaglyContext context, string outputPath, ILogger<Exporter>
         var removedItems = new List<StoredPhoto>();
         await foreach (var item in context.Photos)
         {
-            var fileName = Path.Combine(outputPath, item.FileName);
+            var fileName = Path.Combine(outputPath, $"{item.Id}-{item.FileName}");
             logger.LogInformation($"Output item with ID {item.Id} to {fileName}");
             if (File.Exists(fileName))
             {
