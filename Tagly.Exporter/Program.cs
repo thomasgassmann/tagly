@@ -52,16 +52,16 @@ public class Program
         };
         copyDbOption.SetDefaultValue(false);
 
-        var rootCommand = new RootCommand("Tagly Exporter");
-        rootCommand.AddOption(dbPathOption);
-        rootCommand.AddOption(outputPathOption);
-        rootCommand.AddOption(removeFromDbOption);
-        rootCommand.AddOption(copyDbOption);
+        var exportCommand = new Command("export");
+        exportCommand.AddOption(dbPathOption);
+        exportCommand.AddOption(outputPathOption);
+        exportCommand.AddOption(removeFromDbOption);
+        exportCommand.AddOption(copyDbOption);
 
         var logger = LoggerFactory.Create(
             builder => builder.AddConsole());
 
-        rootCommand.SetHandler(async (dbPath, outputPath, removeFromDb, copyDb) =>
+        exportCommand.SetHandler(async (dbPath, outputPath, removeFromDb, copyDb) =>
         {
             var context = new TaglyContext(dbPath.FullName);
             var exporter = new Exporter(context, outputPath.FullName, logger.CreateLogger<Exporter>());
@@ -78,6 +78,21 @@ public class Program
             }
         }, dbPathOption, outputPathOption, removeFromDbOption, copyDbOption);
 
+        var listCommand = new Command("list");
+        listCommand.AddOption(dbPathOption);
+        listCommand.SetHandler(async (dbPath) =>
+        {
+            var context = new TaglyContext(dbPath.FullName);
+            await foreach (var photo in context.Photos)
+            {
+                Console.WriteLine($"{photo.FileName} \t {photo.Date:dd/MM/yyyy HH:mm} \t {photo.Latitude}°N \t {photo.Longitude}°E \t {photo.Description}");
+            }
+        }, dbPathOption);
+        
+        var rootCommand = new RootCommand("Tagly Exporter");
+        rootCommand.AddCommand(exportCommand);
+        rootCommand.AddCommand(listCommand);
+        
         return await rootCommand.InvokeAsync(args);
     }
 }
