@@ -61,17 +61,20 @@ public class Program
         var logger = LoggerFactory.Create(
             builder => builder.AddConsole());
 
+        var log = logger.CreateLogger<Program>();
+        
         exportCommand.SetHandler(async (dbPath, outputPath, removeFromDb, copyDb) =>
         {
-            var context = new TaglyContext(dbPath.FullName);
-            var exporter = new Exporter(context, outputPath.FullName, logger.CreateLogger<Exporter>());
-            await exporter.ExportAsync();
             if (copyDb)
             {
                 var dbOutputPath = Path.Combine(outputPath.FullName, dbPath.Name);
-                File.Copy(dbPath.FullName, dbOutputPath);                
+                File.Copy(dbPath.FullName, dbOutputPath);
+                log.LogInformation("Backed up db to {}", dbOutputPath);
             }
             
+            var context = new TaglyContext(dbPath.FullName);
+            var exporter = new Exporter(context, outputPath.FullName, logger.CreateLogger<Exporter>());
+            await exporter.ExportAsync();
             if (removeFromDb)
             {
                 await exporter.RemoveFromDbAsync();
