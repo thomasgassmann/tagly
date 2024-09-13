@@ -37,6 +37,7 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddAuthorization();
 builder.Services.Configure<KestrelServerOptions>(options => { options.Limits.MaxRequestBodySize = int.MaxValue; });
+builder.Services.AddHostedService<EmailNotificationWorker>();
 
 var app = builder.Build();
 
