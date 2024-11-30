@@ -88,7 +88,7 @@ public class Program
             var context = new TaglyContext(dbPath.FullName);
             await foreach (var photo in context.Photos)
             {
-                Console.WriteLine($"{photo.FileName} \t {photo.Date:dd/MM/yyyy HH:mm} \t {photo.Latitude}°N \t {photo.Longitude}°E \t {photo.Description}");
+                Console.WriteLine($"{photo.Id} \t {photo.FileName} \t {photo.Date:dd/MM/yyyy HH:mm} \t {photo.Latitude}°N \t {photo.Longitude}°E \t {photo.Description}");
             }
         }, dbPathOption);
         
