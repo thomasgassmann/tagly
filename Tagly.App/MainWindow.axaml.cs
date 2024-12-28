@@ -309,4 +309,22 @@ public partial class MainWindow : Window
             item.Description = null;
         });
     }
+
+    private async void GoSearchLocation(object? sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrEmpty(_viewModel.SearchLocation))
+        {
+            return;
+        }
+
+        var resultingLocation = await GeoCode.GetPointAsync(this._viewModel.SearchLocation);
+        if (resultingLocation != null)
+        {
+            _mapControl.Map.Navigator.CenterOnAndZoomTo(resultingLocation, 1);
+        }
+        else
+        {
+            await this.ShowMessageAsync(Tagly.App.Resources.Failure, Tagly.App.Resources.GeolocationFailure);
+        }
+    }
 }

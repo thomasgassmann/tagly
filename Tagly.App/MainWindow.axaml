@@ -68,6 +68,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
                 <TextBlock Text="{x:Static app:Resources.FileNameLabel}" FontWeight="Bold"/>
@@ -98,14 +99,23 @@
                 <ContentControl Name="MapControl" />
             </Border>
             
-            <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBox Margin="0,5" Grid.Column="0" Text="{Binding SearchLocation}" />
+                <Button Margin="2" Grid.Column="1" Click="GoSearchLocation" Content="{x:Static app:Resources.SearchLocation}" />
+            </Grid>
+            
+            <StackPanel Grid.Row="3" Orientation="Horizontal">
                 <Button Margin="2" Click="SendClick" Content="{x:Static app:Resources.FinishSelected}" />
                 <Button Margin="2" Click="LoadFiles" Content="{x:Static app:Resources.LoadFromDirectory}" />
                 <Button Margin="2" Click="GoHomeClick" Content="{x:Static app:Resources.CenterMap}" />
             </StackPanel>
         </Grid>
-
     </Grid>
-
-
 </Window>

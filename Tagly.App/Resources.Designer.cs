@@ -176,5 +176,17 @@ namespace Tagly.App {
                 return ResourceManager.GetString("ConfirmResetText", resourceCulture);
             }
         }
+        
+        public static string SearchLocation {
+            get {
+                return ResourceManager.GetString("SearchLocation", resourceCulture);
+            }
+        }
+        
+        public static string GeolocationFailure {
+            get {
+                return ResourceManager.GetString("GeolocationFailure", resourceCulture);
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ public class MainWindowViewModel : ReactiveObject
 {
     private string? _currentDescription;
     private string? _currentFileName;
+    private string? _searchLocation;
     private double? _currentLatitude;
     private double? _currentLongitude;
     private DateTimeOffset? _currentDate;
@@ -28,6 +29,12 @@ public class MainWindowViewModel : ReactiveObject
     {
         get => _currentFileName;
         set => this.RaiseAndSetIfChanged(ref _currentFileName, value);
+    }
+
+    public string? SearchLocation
+    {
+        get => _searchLocation;
+        set => this.RaiseAndSetIfChanged(ref _searchLocation, value);
     }
 
     public double? CurrentLatitude

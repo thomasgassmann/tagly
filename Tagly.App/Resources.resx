@@ -84,4 +84,10 @@
     <data name="ConfirmResetText" xml:space="preserve">
         <value>{0} Fotos zurücksetzen?</value>
     </data>
+    <data name="SearchLocation" xml:space="preserve">
+        <value>Standort suchen</value>
+    </data>
+    <data name="GeolocationFailure" xml:space="preserve">
+        <value>Nicht gefunden (oder nicht eindeutig)</value>
+    </data>
 </root>
