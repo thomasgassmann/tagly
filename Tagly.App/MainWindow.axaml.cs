@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
@@ -83,7 +84,22 @@ public partial class MainWindow : Window
     private void UpdateFilesFromSource()
     {
         var currentPhotos = _viewModel.Photos.ToDictionary(x => x.FilePath, x => x);
-        var files = Directory.GetFiles(_sourcePath).OrderBy(x => x);
+        var files = Directory.GetFiles(_sourcePath).OrderBy(x => 
+        {
+            var regex = Regex.Matches(x, @"\((\d+)\)");
+            if (!regex.Any())
+            {
+                return 0;
+            }
+
+            var lastMatch = regex.Last();
+            if (lastMatch.Success && lastMatch.Groups.Count > 1 && int.TryParse(lastMatch.Groups[1].Value, out int i))
+            {
+                return i;
+            }
+
+            return 0;
+        }).ThenBy(x => x);
         foreach (var file in files)
         {
             if (!currentPhotos.ContainsKey(file))
