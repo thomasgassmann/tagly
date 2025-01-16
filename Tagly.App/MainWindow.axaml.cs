@@ -333,14 +333,21 @@ public partial class MainWindow : Window
             return;
         }
 
-        var resultingLocation = await GeoCode.GetPointAsync(this._viewModel.SearchLocation);
-        if (resultingLocation != null)
+        try
         {
-            _mapControl.Map.Navigator.CenterOnAndZoomTo(resultingLocation, 1);
+            var resultingLocation = await GeoCode.GetPointAsync(this._viewModel.SearchLocation);
+            if (resultingLocation != null)
+            {
+                _mapControl.Map.Navigator.CenterOnAndZoomTo(resultingLocation, 1);
+            }
+            else
+            {
+                await this.ShowMessageAsync(Tagly.App.Resources.Failure, Tagly.App.Resources.GeolocationFailure);
+            }
         }
-        else
+        catch (Exception ex)
         {
-            await this.ShowMessageAsync(Tagly.App.Resources.Failure, Tagly.App.Resources.GeolocationFailure);
+            await this.ShowMessageAsync(Tagly.App.Resources.Failure, ex.Message);
         }
     }
 }
