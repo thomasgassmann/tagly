@@ -38,7 +38,7 @@ public class PhotosService(ILogger<PhotosService> logger, TaglyContext dbContext
             Description = request.Meta.Description,
             Latitude = request.Meta.Latitude,
             Longitude = request.Meta.Longitude,
-            Created = DateTime.Now
+            Created = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)
         });
         await dbContext.SaveChangesAsync(context.CancellationToken);
         return new PhotoCreationStatus
