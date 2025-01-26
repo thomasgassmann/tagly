@@ -22,6 +22,11 @@ public class EmailNotificationWorker(ILogger<EmailNotificationWorker> logger, IS
 
     private async Task CheckItemsAsync()
     {
+        if (!Convert.ToBoolean(config["EnableNotifications"]))
+        {
+            return;
+        }
+        
         using var scope = scopeFactory.CreateScope();
         var context = scope.ServiceProvider.GetService<TaglyContext>()!;
         var currentPhotos = await context.Photos.AsNoTracking().ToListAsync();
