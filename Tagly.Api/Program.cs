@@ -41,12 +41,9 @@ builder.Services.AddHostedService<EmailNotificationWorker>();
 
 var app = builder.Build();
 
-if (!File.Exists(dbPath))
-{
-    using var serviceScope = app.Services.CreateScope();
-    var context = serviceScope.ServiceProvider.GetRequiredService<TaglyContext>();
-    context.Database.Migrate();
-}
+using var serviceScope = app.Services.CreateScope();
+var context = serviceScope.ServiceProvider.GetRequiredService<TaglyContext>();
+context.Database.Migrate();
 
 app.UseRouting();
 app.UseAuthentication();

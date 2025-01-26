@@ -182,6 +182,7 @@ public partial class MainWindow : Window
             catch (Exception ex)
             {
                 await this.ShowMessageAsync(Tagly.App.Resources.Failure, ex.Message);
+                failure = true;
                 break;
             }
         }
