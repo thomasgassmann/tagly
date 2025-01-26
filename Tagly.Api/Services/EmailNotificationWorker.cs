@@ -62,10 +62,10 @@ public class EmailNotificationWorker(ILogger<EmailNotificationWorker> logger, IS
         message.IsBodyHtml = false;
         var body = new StringBuilder("There are new uploaded photos:");
         body.AppendLine();
-        body.AppendLine("Id / Filename / Latitude / Longitude / Date / Description");
+        body.AppendLine("Id / Filename / Latitude / Longitude / Date / Description / Created");
         foreach (var photo in newPhotos)
         {
-            body.AppendLine($"{photo.Id} / {photo.FileName} / {photo.Latitude} / {photo.Longitude} / {photo.Date:yyyy-MM-dd HH:mm} / {photo.Description}");
+            body.AppendLine($"{photo.Id} / {photo.FileName} / {photo.Latitude} / {photo.Longitude} / {photo.Date:yyyy-MM-dd HH:mm} / {photo.Description} / {photo.Created:yyyy-MM-dd HH:mm}");
         }
         
         message.Body = body.ToString();

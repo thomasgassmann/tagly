@@ -51,12 +51,21 @@ public class Program
             IsRequired = false
         };
         copyDbOption.SetDefaultValue(false);
+        
+        var jsonMetaOption = new Option<bool>(
+            name: "--json-meta",
+            description: "Creates a JSON metadata file in the output directory")
+        {
+            IsRequired = false
+        };
+        jsonMetaOption.SetDefaultValue(false);
 
         var exportCommand = new Command("export");
         exportCommand.AddOption(dbPathOption);
         exportCommand.AddOption(outputPathOption);
         exportCommand.AddOption(removeFromDbOption);
         exportCommand.AddOption(copyDbOption);
+        exportCommand.AddOption(jsonMetaOption);
 
         var logger = LoggerFactory.Create(
             builder => builder.AddConsole());
@@ -88,7 +97,7 @@ public class Program
             var context = new TaglyContext(dbPath.FullName);
             await foreach (var photo in context.Photos)
             {
-                Console.WriteLine($"{photo.Id} \t {photo.FileName} \t {photo.Date:dd/MM/yyyy HH:mm} \t {photo.Latitude}°N \t {photo.Longitude}°E \t {photo.Description}");
+                Console.WriteLine($"{photo.Id} \t {photo.FileName} \t {photo.Date:dd/MM/yyyy HH:mm} \t {photo.Latitude}°N \t {photo.Longitude}°E \t {photo.Description} \t {photo.Created:dd/MM/yyyy HH:mm}");
             }
         }, dbPathOption);
         
