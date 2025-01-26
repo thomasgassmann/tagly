@@ -164,6 +164,8 @@ public partial class MainWindow : Window
                         Date = Timestamp.FromDateTime(DateTime.SpecifyKind(dateTime, DateTimeKind.Utc)),
                         Description = selected.Description ?? string.Empty,
                         FileName = selected.FileName,
+                        BatchId = 0,
+                        BatchNumber = 0
                     }
                 });
 

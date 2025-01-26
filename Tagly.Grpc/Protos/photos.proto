@@ -17,6 +17,8 @@ message ServerPhotoMeta {
   double latitude = 3;
   double longitude = 4;
   string description = 5;
+  int32 batch_id = 6;
+  int32 batch_number = 7;
 }
 
 message PhotoCreationStatus {

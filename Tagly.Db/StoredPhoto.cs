@@ -14,4 +14,6 @@ public class StoredPhoto
     public double? Longitude { get; set; }
     public string? Description { get; set; }
     public DateTime? Created { get; set; }
+    public int? BatchId { get; set; }
+    public int? BatchNumber { get; set; }
 }
