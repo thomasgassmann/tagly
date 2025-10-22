@@ -8,75 +8,74 @@ public class Program
 {
     public static async Task<int> Main(string[] args)
     {
-        var dbPathOption = new Option<FileInfo>(
-            name: "--db",
-            description: "The db file to read")
+        var dbPathOption = new Option<FileInfo>(name: "--db")
         {
-            IsRequired = true
+            Description = "The db file to read",
+            Required = true
         };
-        dbPathOption.AddValidator(dir =>
+        dbPathOption.Validators.Add(dir =>
         {
             if (!(dir.GetValueOrDefault<FileInfo>()?.Exists ?? false))
             {
-                dir.ErrorMessage = "Db file must exist";
+                dir.AddError("Db file must exist");
             }
         });
 
-        var outputPathOption = new Option<DirectoryInfo>(
-            name: "--out",
-            description: "The output directory for photos")
+        var outputPathOption = new Option<DirectoryInfo>(name: "--out")
         {
-            IsRequired = true
+            Description = "The output directory for photos",
+            Required = true
         };
-        outputPathOption.AddValidator(dir =>
+        outputPathOption.Validators.Add(dir =>
         {
             if (!(dir.GetValueOrDefault<DirectoryInfo>()?.Exists ?? false))
             {
-                dir.ErrorMessage = "Directory path must exist";
+                dir.AddError("Directory path must exist");
             }
         });
 
-        var removeFromDbOption = new Option<bool>(
-            name: "--remove",
-            description: "Remove processed items from db")
+        var removeFromDbOption = new Option<bool>(name: "--remove")
         {
-            IsRequired = false
+            Description = "Remove processed items from db",
+            Required = false,
+            DefaultValueFactory = _ => false
         };
-        removeFromDbOption.SetDefaultValue(false);
         
-        var copyDbOption = new Option<bool>(
-            name: "--copy-db",
-            description: "Copies the database to the output directory")
+        var copyDbOption = new Option<bool>(name: "--copy-db")
         {
-            IsRequired = false
+            Description = "Copies the database to the output directory",
+            Required = false,
+            DefaultValueFactory = _ => false
         };
-        copyDbOption.SetDefaultValue(false);
         
-        var jsonMetaOption = new Option<bool>(
-            name: "--json-meta",
-            description: "Creates a JSON metadata file in the output directory")
+        var jsonMetaOption = new Option<bool>(name: "--json-meta")
         {
-            IsRequired = false
+            Description = "Creates a JSON metadata file in the output directory",
+            Required = false,
+            DefaultValueFactory = _ => false
         };
-        jsonMetaOption.SetDefaultValue(false);
 
         var exportCommand = new Command("export");
-        exportCommand.AddOption(dbPathOption);
-        exportCommand.AddOption(outputPathOption);
-        exportCommand.AddOption(removeFromDbOption);
-        exportCommand.AddOption(copyDbOption);
-        exportCommand.AddOption(jsonMetaOption);
+        exportCommand.Options.Add(dbPathOption);
+        exportCommand.Options.Add(outputPathOption);
+        exportCommand.Options.Add(removeFromDbOption);
+        exportCommand.Options.Add(copyDbOption);
+        exportCommand.Options.Add(jsonMetaOption);
 
         var logger = LoggerFactory.Create(
             builder => builder.AddConsole());
 
         var log = logger.CreateLogger<Program>();
         
-        exportCommand.SetHandler(async (dbPath, outputPath, removeFromDb, copyDb) =>
+        exportCommand.SetAction(async (parseResult) =>
         {
+            var copyDb = parseResult.GetValue(copyDbOption);
+            var outputPath = parseResult.GetValue(outputPathOption)!;
+            var dbPath = parseResult.GetValue(dbPathOption)!;
+            var removeFromDb = parseResult.GetValue(removeFromDbOption)!;
             if (copyDb)
             {
-                var dbOutputPath = Path.Combine(outputPath.FullName, dbPath.Name);
+                var dbOutputPath = Path.Combine(outputPath!.FullName, dbPath.Name);
                 File.Copy(dbPath.FullName, dbOutputPath);
                 log.LogInformation("Backed up db to {}", dbOutputPath);
             }
@@ -88,23 +87,24 @@ public class Program
             {
                 await exporter.RemoveFromDbAsync();
             }
-        }, dbPathOption, outputPathOption, removeFromDbOption, copyDbOption);
+        });
 
         var listCommand = new Command("list");
-        listCommand.AddOption(dbPathOption);
-        listCommand.SetHandler(async (dbPath) =>
+        listCommand.Options.Add(dbPathOption);
+        listCommand.SetAction(async parseResult =>
         {
+            var dbPath = parseResult.GetValue(dbPathOption)!;
             var context = new TaglyContext(dbPath.FullName);
             await foreach (var photo in context.Photos)
             {
                 Console.WriteLine($"{photo.Id} \t {photo.FileName} \t {photo.Date:dd/MM/yyyy HH:mm} \t {photo.Latitude}°N \t {photo.Longitude}°E \t {photo.Description} \t {photo.Created:dd/MM/yyyy HH:mm}");
             }
-        }, dbPathOption);
+        });
         
         var rootCommand = new RootCommand("Tagly Exporter");
-        rootCommand.AddCommand(exportCommand);
-        rootCommand.AddCommand(listCommand);
+        rootCommand.Subcommands.Add(exportCommand);
+        rootCommand.Subcommands.Add(listCommand);
         
-        return await rootCommand.InvokeAsync(args);
+        return await rootCommand.Parse(args).InvokeAsync();
     }
 }
