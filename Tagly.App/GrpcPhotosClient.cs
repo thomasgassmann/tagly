@@ -1,7 +1,11 @@
 using System;
+using System.Net;
+using System.Net.Http;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
+using Grpc.Net.Client.Configuration;
 using Tagly.Grpc;
 
 namespace Tagly.App;
@@ -10,11 +14,24 @@ public class GrpcPhotosClient(string url, string token, bool secure)
 {
     public Photos.PhotosClient Client => new(CreateAuthenticatedChannel());
 
+    private static SocketsHttpHandler CreateHttpHandler() => new()
+    {
+        ConnectCallback = async (context, cancellationToken) =>
+        {
+            var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            await socket.ConnectAsync(context.DnsEndPoint, cancellationToken);
+            return new NetworkStream(socket, ownsSocket: true);
+        },
+        ConnectTimeout = TimeSpan.FromSeconds(5),
+        EnableMultipleHttp2Connections = true,
+    };
+
     public async Task<string> GetJwtAsync()
     {
         using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions
         {
-            Credentials = secure ? ChannelCredentials.SecureSsl : ChannelCredentials.Insecure
+            Credentials = secure ? ChannelCredentials.SecureSsl : ChannelCredentials.Insecure,
+            HttpHandler = CreateHttpHandler(),
         });
         var client = new Auth.AuthClient(channel);
         var response = await client.LoginAsync(new AuthRequest
@@ -40,6 +57,7 @@ public class GrpcPhotosClient(string url, string token, bool secure)
             Credentials = ChannelCredentials.Create(secure ? ChannelCredentials.SecureSsl : ChannelCredentials.Insecure,
                 credentials),
             UnsafeUseInsecureChannelCallCredentials = !secure,
+            HttpHandler = CreateHttpHandler(),
             MaxSendMessageSize = int.MaxValue,
             MaxReceiveMessageSize = int.MaxValue
         });
