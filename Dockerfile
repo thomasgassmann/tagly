@@ -9,4 +9,5 @@ RUN dotnet publish -c release --property:PublishDir=/app --no-restore
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /app ./
+USER $APP_UID
 ENTRYPOINT ["dotnet", "Tagly.Api.dll"]
